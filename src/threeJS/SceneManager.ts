@@ -33,7 +33,7 @@ export default class SceneManager {
         this.scene = this.buildScene();
         this.renderer = this.buildRender(screenMetaData);
         this.camera = this.buildCamera(screenMetaData);
-        this.loader = this.getModelLoader();
+        // this.loader = this.getModelLoader();
         this.controls = this.buildController(this.camera, this.renderer)
         this.sceneSubjects = [];
     }
@@ -48,7 +48,8 @@ export default class SceneManager {
         const scene = new THREE.Scene();
         var ambientLight = new THREE.AmbientLight( 0xcccccc );
         scene.add( ambientLight );
-                    
+        // scene.background = new THREE.Color( 0x050505 );
+        // scene.fog = new THREE.Fog( 0x050505, 2000, 3500 );
         var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8);
         directionalLight.position.set( 0, 4, 11 ).normalize();
         scene.add( directionalLight );	

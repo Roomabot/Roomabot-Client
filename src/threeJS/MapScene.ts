@@ -1,13 +1,13 @@
 import  SceneSubject  from './SceneSubject'
 import SceneManger from './SceneManager'
-import { Map } from './GridMap';
+import  { OccupancyGrid } from './OccupancyGrid';
 
 export default class WaveScene{
 
-    private map: Map;
+    private map: OccupancyGrid;
 
     constructor(private sceneManager: SceneManger){
-        this.map = new Map(sceneManager);
+        this.map = new OccupancyGrid(sceneManager);
     }
 
 }

@@ -2,8 +2,9 @@ import  SceneSubject  from './SceneSubject'
 import * as THREE from 'three'
 import SceneManager from './SceneManager';
 import { BufferGeometry } from 'three';
+import { _mock } from '../_mock_occupancy_grid'
 
-export class Map implements SceneSubject{
+export class OccupancyGrid implements SceneSubject{
     public map: THREE.Points;
     public rotation: THREE.Vector3;
     public speed: THREE.Vector3;
@@ -11,6 +12,62 @@ export class Map implements SceneSubject{
     public height: number 
 
     private count: number = 0
+
+    generateFromDump(){
+      var dump = _mock
+      const geometry = new THREE.BufferGeometry();
+      const height = dump.info.height
+      const width = dump.info.width
+      const numPoints = dump.data.length
+
+      const positions = new Float32Array( numPoints * 3 );
+      const colors = new Float32Array( numPoints * 3 );
+      const color = new THREE.Color()
+      let k = 0;
+      for ( let i = 0; i < height; i ++ ) {
+
+        for ( let j = 0; j < width; j ++ ) {
+
+          let indx = i + (width * j)
+          let data = dump.data[indx]
+
+          // const u = i / width;
+          // const v = j / length;
+          // const x = 0;
+          // const y = 0;
+          // const z = v - 0.5;
+
+          // grid helper is setup on xz plane
+          positions[ 3*k ] = i * 0.05; // x
+          positions[ 3*k + 1 ] = 0; // y
+          positions[ 3*k + 2 ] = j * 0.05; // z
+
+
+          let val = data === -1 ? 1 : (data === 100 ? 1 : .34);
+          color.setRGB(val, val, val)
+          // colors[ 3*k ] = val
+          // colors[ 3*k + 1  ] = val
+          // colors[ 3*k + 2  ] = val
+          const intensity = ( 5 + 0.1 ) * 5;
+          colors[ 3 * k ] = val;
+          colors[ 3 * k + 1 ] = val;
+          colors[ 3 * k + 2 ] = val;
+
+          k++
+        }
+
+      }
+
+      console.info(colors)
+      
+      geometry.setAttribute('position', new THREE.BufferAttribute( positions, 3 ) );
+      geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+      // geometry.attributes.position.needsUpdate = true;
+      geometry.computeBoundingSphere();
+
+      return geometry;
+    }
+
     generatePointCloudGeometry( color, width, length ) {
 
       const geometry = new THREE.BufferGeometry();
@@ -47,8 +104,9 @@ export class Map implements SceneSubject{
       }
 
       geometry.setAttribute('position', new THREE.BufferAttribute( positions, 3 ) );
-      geometry.attributes.position.needsUpdate = true;
       geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+      geometry.attributes.position.needsUpdate = true;
+      
       geometry.computeBoundingBox();
 
       return geometry;
@@ -56,9 +114,10 @@ export class Map implements SceneSubject{
 
     generatePointcloud( color, width, length ) {
       const threshold = 0.1;
-			const pointSize = 0.08;
-      const geometry = this.generatePointCloudGeometry( color, width, length );
-      const material = new THREE.PointsMaterial( { size: pointSize, color: 0xff44ff } );
+			const pointSize = 0.5;
+      const geometry = this.generateFromDump();
+      
+      const material = new THREE.PointsMaterial( { size: pointSize, vertexColors: true  } );
     
       return new THREE.Points( geometry, material );
 
@@ -70,10 +129,14 @@ export class Map implements SceneSubject{
       this.height = 160;
 
       const pcBuffer = this.generatePointcloud( new THREE.Color( 107, 0, 168 ), this.width, this.height );
-      pcBuffer.scale.set( 10, 5, 10);
-      pcBuffer.position.set( 0, 0, 0);
-      pcBuffer.rotateOnWorldAxis(new THREE.Vector3(0,1,0), Math.PI/4);
-      pcBuffer.rotateOnWorldAxis(new THREE.Vector3(1,0,0), -Math.PI/10);
+      // pcBuffer.scale.set( 10, 5, 10);
+      var dump = _mock
+      const height = dump.info.height
+      const width = dump.info.width
+      const numPoints = dump.data.length
+      pcBuffer.position.set( -(width*0.05)/2, 0, -(0.05*height)/2);
+      // pcBuffer.rotateOnWorldAxis(new THREE.Vector3(0,1,0), Math.PI/4);
+      // pcBuffer.rotateOnWorldAxis(new THREE.Vector3(1,0,0), -Math.PI/10);
       // pcBuffer.rotateOnAxis()
       // pcBuffer.
       // pcBuffer.rotateOnWorldAxis(new THREE.Vector3(1,0,0), -Math.PI/7);
@@ -91,16 +154,16 @@ export class Map implements SceneSubject{
 
     update = () => {
       // update point cloud map
-      this.map.rotateOnWorldAxis(new THREE.Vector3(0,1,0), 0.00001);
-      var geometry = this.map.geometry as BufferGeometry
-      var positions = geometry.attributes.position
-      // var colors = geometry.attributes
-      const width = this.width
-      const length = this.height
-      let k = 0;
+      // this.map.rotateOnWorldAxis(new THREE.Vector3(0,1,0), 0.00001);
+      // var geometry = this.map.geometry as BufferGeometry
+      // var positions = geometry.attributes.position
+      // // var colors = geometry.attributes
+      // const width = this.width
+      // const length = this.height
+      // let k = 0;
 
-      this.count += 0.001;
-      positions.needsUpdate = true; 
+      // this.count += 0.001;
+      // positions.needsUpdate = true; 
       // console.log(this.map.position)
     }
 }

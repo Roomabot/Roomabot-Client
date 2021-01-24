@@ -17,9 +17,9 @@ export default function TCanvas(containerElement){
 
 	var camera = sceneManager.getCamera();
   var plane = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 1));
-  var raycaster = new THREE.Raycaster();
-	var edge = new THREE.Vector2();
-  var edgePoint = new THREE.Vector3();
+  // var raycaster = new THREE.Raycaster();
+	// var edge = new THREE.Vector2();
+  // var edgePoint = new THREE.Vector3();
 	const createScene = new MapScene(sceneManager);
 	const grid = new Grid(sceneManager);
 	const LEFT_EDGE = {x: -1, y: 0};

@@ -9,9 +9,10 @@ export default class Grid{
     constructor(private sceneManager: SceneManger){
         const size = 20;
         const divisions = 200;
-
+        const axesHelper = new THREE.AxesHelper( 5 );
         const gridHelper = new THREE.GridHelper( size, divisions );
-        sceneManager.addObject(gridHelper)
+        sceneManager.addObject( axesHelper );
+        // sceneManager.addObject(gridHelper)
     }
 
 }

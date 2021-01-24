@@ -1,4 +1,4 @@
-const _mock = {
+export const _mock = {
   "header": {
     "seq": 2,
     "stamp": {
