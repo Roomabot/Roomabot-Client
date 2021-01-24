@@ -1,4 +1,5 @@
-import { Button } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
+import yaml from 'js-yaml';
 import React, { useEffect, useState } from 'react'
 import socketIOClient from "socket.io-client"
 
@@ -19,7 +20,12 @@ function Map(props) {
 		const socket = new WebSocket(WS_ENDPOINT)
 		setSocket(socket)
 		socket.onmessage = function (event) {
-			console.log(event.data)
+			try {
+				const doc = yaml.load(event.data);
+				console.log(doc);
+			} catch (e) {
+				console.log(e);
+			}
 			setData(event.data);
 		}
 		
@@ -35,7 +41,7 @@ function Map(props) {
 	}
 
 	return (
-		<div>
+		<Box>
 			{ data }		
 			<Button 
 				variant="outlined"
@@ -43,7 +49,7 @@ function Map(props) {
 			>
 				Send Bop
 			</Button>
-		</div>
+		</Box>
 	)
 }
 

@@ -1,50 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import React, { useState } from 'react';
 import './App.css';
 import Map from './Map';
-import { Box, Button, Container, CssBaseline, Divider, makeStyles, TextField, Typography } from '@material-ui/core';
-import find from 'local-devices'
+import { Container, CssBaseline, makeStyles } from '@material-ui/core';
+import Connect from './components/Connect';
+import Dashboard from './components/Dashboard';
 
-const useStyles = makeStyles(theme=>({
+const useStyles = makeStyles(()=>({
   root: {
     display: 'grid',
     justifyContent:'center'
   }
 }))
+
 function App() {
   const classes = useStyles()
-  const [roomabotIP , setIP] = useState('')
+  const [roomabotIP, setIP] = useState('192.168.0.142')
   const [connected, setConnected] = useState(false)
+
+  const onConnect = (status, ip) => {
+    setConnected(true)
+    setIP(ip)
+  }
 
   return (
     <div className="App">
       <CssBaseline/>
-      <Container>
-        <Box p={3} className={classes.root}>
-          <Typography variant="h3">
-            Roomabot 
-          </Typography>
-          <img src={logo} className="App-logo" alt="logo" />
-          <TextField 
-            variant="outlined"
-            label="IP"
-            onChange={e => setIP(e.target.value)}
-          />
-          <Divider style={{margin: '8px'}} />
-          <Button 
-            variant="outlined"
-            onClick={() => setConnected(true)}
-          >
-            Connect to Roomabot
-          </Button>
-
-          <span>
-            { connected && 
-              <Map IP={roomabotIP}/>
-            }
-          </span>
-        </Box>
+      <Container className={classes.root}>
+        {
+          !connected &&
+          <Connect setConnected={setConnected}/>
+        }
+        { connected && 
+          <Dashboard IP={roomabotIP}/>
+        }
       </Container>
     </div>
   );
