@@ -2,6 +2,7 @@ import { Box, Button } from '@material-ui/core';
 import yaml from 'js-yaml';
 import React, { useEffect, useState } from 'react'
 import socketIOClient from "socket.io-client"
+import CanvasScene from './components/Canvas';
 
 /* 
 	todo: fetch the ip dynamically
@@ -42,13 +43,8 @@ function Map(props) {
 
 	return (
 		<Box>
-			{ data }		
-			<Button 
-				variant="outlined"
-				onClick={() => sendDrive()}	
-			>
-				Send Bop
-			</Button>
+			{/* { data } */}
+			<CanvasScene/>		
 		</Box>
 	)
 }

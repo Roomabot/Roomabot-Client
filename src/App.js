@@ -8,6 +8,8 @@ import Dashboard from './components/Dashboard';
 const useStyles = makeStyles(()=>({
   root: {
     display: 'grid',
+    width: '100vw',
+    height: '100vh',
     justifyContent:'center'
   }
 }))
@@ -25,7 +27,7 @@ function App() {
   return (
     <div className="App">
       <CssBaseline/>
-      <Container className={classes.root}>
+      <div className={classes.root}>
         {
           !connected &&
           <Connect setConnected={setConnected}/>
@@ -33,7 +35,7 @@ function App() {
         { connected && 
           <Dashboard IP={roomabotIP}/>
         }
-      </Container>
+      </div>
     </div>
   );
 }
