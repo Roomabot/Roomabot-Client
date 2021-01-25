@@ -22,6 +22,7 @@ export class OccupancyGrid implements SceneSubject{
 
       const positions = new Float32Array( numPoints * 3 );
       const colors = new Float32Array( numPoints * 3 );
+      const alphas = new Float32Array( numPoints );
       const color = new THREE.Color()
       let k = 0;
       for ( let i = 0; i < height; i ++ ) {
@@ -42,7 +43,7 @@ export class OccupancyGrid implements SceneSubject{
           positions[ 3*k + 1 ] = 0; // y
           positions[ 3*k + 2 ] = j * 0.05; // z
 
-
+          
           let val = data === -1 ? 1 : (data === 100 ? 1 : .34);
           color.setRGB(val, val, val)
           // colors[ 3*k ] = val
@@ -53,6 +54,7 @@ export class OccupancyGrid implements SceneSubject{
           colors[ 3 * k + 1 ] = val;
           colors[ 3 * k + 2 ] = val;
 
+          alphas[k] = data === -1 ? 0 : 1 
           k++
         }
 
@@ -62,6 +64,7 @@ export class OccupancyGrid implements SceneSubject{
       
       geometry.setAttribute('position', new THREE.BufferAttribute( positions, 3 ) );
       geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+      geometry.setAttribute( 'alpha', new THREE.BufferAttribute( alphas, 1 ) );
       // geometry.attributes.position.needsUpdate = true;
       geometry.computeBoundingSphere();
 

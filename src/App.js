@@ -17,7 +17,7 @@ const useStyles = makeStyles(()=>({
 function App() {
   const classes = useStyles()
   const [roomabotIP, setIP] = useState('192.168.0.142')
-  const [connected, setConnected] = useState(true)
+  const [connected, setConnected] = useState(false)
 
   const onConnect = (status, ip) => {
     setConnected(true)

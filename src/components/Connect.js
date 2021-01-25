@@ -5,7 +5,9 @@ import { Box, Button, Container, CssBaseline, Divider, makeStyles, TextField, Ty
 const useStyles = makeStyles(theme=>({
   root: {
     display: 'grid',
-    justifyContent:'center'
+    justifyContent:'center',
+    alignContent: 'baseline',
+    textAlign: 'center'
   }
 }))
 
