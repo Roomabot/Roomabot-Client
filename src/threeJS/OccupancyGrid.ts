@@ -118,7 +118,7 @@ export class OccupancyGrid implements SceneSubject{
     generatePointcloud( color, width, length ) {
       const threshold = 0.1;
 			const pointSize = 0.5;
-      const geometry = this.generateFromDump();
+      const geometry = this.generatePointCloudGeometry(color, width, length);
       
       const material = new THREE.PointsMaterial( { size: pointSize, vertexColors: true  } );
     

@@ -12,7 +12,7 @@ export default class Grid{
         const axesHelper = new THREE.AxesHelper( 5 );
         const gridHelper = new THREE.GridHelper( size, divisions );
         sceneManager.addObject( axesHelper );
-        // sceneManager.addObject(gridHelper)
+        sceneManager.addObject(gridHelper)
     }
 
 }
