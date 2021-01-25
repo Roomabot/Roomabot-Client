@@ -16,18 +16,22 @@ const KEY_FORWARD = "ArrowUp"
 const KEY_LEFT = "ArrowLeft"
 const KEY_BACK = "ArrowDown"
 const KEY_RIGHT = "ArrowRight"
-const STOPPED = "Stopped"
+const DRIVE = { STOPPED: "Stopped", FORWARD: "Forward", BACK: "Back", CCW: 'CCW', CW: 'CW'}
+
 function Map(props) {
 	
   // const [key, props.onKey] = useState('')
 	const [data, setData] = useState(0)
+	const [key, setKey] = useState(DRIVE.STOPPED)
 	
 	useEffect(() => {
+		// TODO: abstract and clean up code
 		const WS_ENDPOINT = `wss://${props.IP}:6001`
 		console.log('ON MESAGE')
 		const socket = new WebSocket(WS_ENDPOINT)
-		const keyDownHandler = (e) => handleKeyEvent(socket, KEY_EVENT.DOWN, e)
-    const keyUpHandler = (e) => handleKeyEvent(socket, KEY_EVENT.UP, e)
+		var prev = { instruction: DRIVE.STOPPED };
+		const keyDownHandler = (e) => handleKeyEvent(e, socket, KEY_EVENT.DOWN, prev)
+    const keyUpHandler = (e) => handleKeyEvent(e, socket, KEY_EVENT.UP, prev)
     document.addEventListener('keydown', keyDownHandler)
     document.addEventListener('keyup', keyUpHandler)
 		socket.onmessage = function (event) {
@@ -49,40 +53,38 @@ function Map(props) {
 	
 	}, [props.IP]);
 	
-	const drive = (socket, instrc) => {
+	const drive = (socket, instrc, prev) => {
+		if (instrc === prev.instruction){
+			return null
+		}
 		socket.send(instrc)
+		prev.instruction = instrc 
 		props.onKey(instrc)
 	}
 
-	const handleKeyEvent = (socket, type, e) => {
+	const handleKeyEvent = (e, socket, type, prev) => {
 		var k;
     switch (e.key) {
       case KEY_FORWARD:
-				k = type === KEY_EVENT.DOWN ? "Forward" : STOPPED
-        drive(socket, k)
+				k = type === KEY_EVENT.DOWN ? DRIVE.FORWARD : DRIVE.STOPPED
+        drive(socket, k, prev)
         break
       case KEY_BACK:
-				k = type === KEY_EVENT.DOWN ? "Back" : STOPPED
-        drive(socket, k)
+				k = type === KEY_EVENT.DOWN ? DRIVE.BACK : DRIVE.STOPPED
+        drive(socket, k, prev)
         break
 			case KEY_RIGHT:
-				k = type === KEY_EVENT.DOWN ? "Clockwise" : STOPPED
-        drive(socket, k)
+				k = type === KEY_EVENT.DOWN ? DRIVE.CW : DRIVE.STOPPED
+        drive(socket, k, prev)
         break
       case KEY_LEFT:
-				k = type === KEY_EVENT.DOWN ? "Counter clockwise" : STOPPED
-        drive(socket, k)
+				k = type === KEY_EVENT.DOWN ? DRIVE.CCW : DRIVE.STOPPED
+        drive(socket, k, prev)
         break
       default:
         break
     }
   }
-	// useEffect(() => {
-    
-  //   return () => {
-      
-  //   }
-  // }, [])
 	return (
 		<Box>
 			{/* { data } */}
