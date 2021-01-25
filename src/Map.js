@@ -23,7 +23,7 @@ function Map(props) {
 	const [data, setData] = useState(0)
 	
 	useEffect(() => {
-		const WS_ENDPOINT = `ws://${props.IP}:6001`
+		const WS_ENDPOINT = `wss://${props.IP}:6001`
 		console.log('ON MESAGE')
 		const socket = new WebSocket(WS_ENDPOINT)
 		const keyDownHandler = (e) => handleKeyEvent(socket, KEY_EVENT.DOWN, e)
