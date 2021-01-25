@@ -32,7 +32,7 @@ function App() {
       <div className={classes.root}>
         {
           !connected &&
-          <Connect setConnected={onConnect}/>
+          <Connect lastIP={lastIP} setConnected={onConnect}/>
         }
         { connected && 
           <Dashboard IP={roomabotIP}/>

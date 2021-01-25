@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme=>({
 
 function Connect(props) {
   const classes = useStyles()
-  const [roomabotIP , setIP] = useState('192.168.0.142')
+  const [roomabotIP , setIP] = useState(props.lastIP)
   return (
     <Box p={3} className={classes.root}>
     <Typography variant="h3">
