@@ -2,7 +2,6 @@ import  SceneSubject  from './SceneSubject'
 import * as THREE from 'three'
 import SceneManager from './SceneManager';
 import { BufferGeometry } from 'three';
-import { _mock } from '../_mock_occupancy_grid'
 
 export class OccupancyGrid implements SceneSubject{
     public map: THREE.Points;
@@ -13,8 +12,10 @@ export class OccupancyGrid implements SceneSubject{
 
     private count: number = 0
 
+    /*
+     
     generateFromDump(){
-      var dump = _mock
+      var dump = {}
       const geometry = new THREE.BufferGeometry();
       const height = dump.info.height
       const width = dump.info.width
@@ -70,7 +71,7 @@ export class OccupancyGrid implements SceneSubject{
 
       return geometry;
     }
-
+*/
     generatePointCloudGeometry( color, width, length ) {
 
       const geometry = new THREE.BufferGeometry();
@@ -133,11 +134,12 @@ export class OccupancyGrid implements SceneSubject{
 
       const pcBuffer = this.generatePointcloud( new THREE.Color( 107, 0, 168 ), this.width, this.height );
       // pcBuffer.scale.set( 10, 5, 10);
-      var dump = _mock
-      const height = dump.info.height
-      const width = dump.info.width
-      const numPoints = dump.data.length
-      pcBuffer.position.set( -(width*0.05)/2, 0, -(0.05*height)/2);
+      // var dump = _mock
+      // const height = dump.info.height
+      // const width = dump.info.width
+      // const numPoints = dump.data.length
+      // pcBuffer.position.set( -(width*0.05)/2, 0, -(0.05*height)/2);
+      pcBuffer.position.set( 0, 0, 0 );
       // pcBuffer.rotateOnWorldAxis(new THREE.Vector3(0,1,0), Math.PI/4);
       // pcBuffer.rotateOnWorldAxis(new THREE.Vector3(1,0,0), -Math.PI/10);
       // pcBuffer.rotateOnAxis()
