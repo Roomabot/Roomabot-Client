@@ -20,8 +20,8 @@ function App() {
   const [connected, setConnected] = useState(false)
 
   const onConnect = (status, ip) => {
-    setConnected(true)
     setIP(ip)
+    setConnected(true)
   }
 
   return (
@@ -30,7 +30,7 @@ function App() {
       <div className={classes.root}>
         {
           !connected &&
-          <Connect setConnected={setConnected}/>
+          <Connect setConnected={onConnect}/>
         }
         { connected && 
           <Dashboard IP={roomabotIP}/>
