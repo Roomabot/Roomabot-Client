@@ -2,7 +2,7 @@ import  SceneSubject  from './SceneSubject'
 import SceneManger from './SceneManager'
 import  { OccupancyGrid } from './OccupancyGrid';
 
-export default class WaveScene{
+export default class MapScene{
 
     private map: OccupancyGrid;
 

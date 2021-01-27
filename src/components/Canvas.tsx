@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
 import '../App.css'
-import mainScene from '../threeJS/main'
+import { ThreeCanvas } from '../threeJS/main'
 
 const useStyles = makeStyles(theme=>({
   root:{
@@ -9,19 +9,23 @@ const useStyles = makeStyles(theme=>({
     borderRadius: theme.spacing(1)
   }
 }))
-function CanvasScene (){
+function CanvasScene (props){
   const classes = useStyles()
   var threeContainer = null;
   const [canvas, setCanvas] = useState(null)
   
   useEffect(()=>{
-	  setCanvas(mainScene(threeContainer))
+    const tCanvas = new ThreeCanvas(threeContainer)
+	  setCanvas(tCanvas)
   }, [threeContainer])
+
+  useEffect(() => {
+  }, [props.map])
 
   return (
     <div 
       id="canvas-div" 
-      className={classes.root} 
+      className={classes.root}
       ref={element => threeContainer = element}
     >
     </div>

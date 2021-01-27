@@ -23,6 +23,7 @@ function Map(props) {
   // const [key, props.onKey] = useState('')
 	const [data, setData] = useState(0)
 	const [key, setKey] = useState(DRIVE.STOPPED)
+	const [map, setMap] = useState(null)
 	
 	useEffect(() => {
 		// TODO: abstract and clean up code
@@ -37,6 +38,7 @@ function Map(props) {
 		socket.onmessage = function (event) {
 			try {
 				const doc = yaml.load(event.data);
+				setMap(map)
 				console.log(doc);
 			} catch (e) {
 				console.log(e);
@@ -88,7 +90,7 @@ function Map(props) {
 	return (
 		<Box>
 			{/* { data } */}
-			<CanvasScene/>		
+			<CanvasScene map={map}/>		
 		</Box>
 	)
 }

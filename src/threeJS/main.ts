@@ -5,54 +5,52 @@ import * as THREE from 'three';
 import MapScene from './MapScene';
 import Grid from './Grid';
 
-// export class ThreeCanvas{
-//   constructor(){
-
-//   }
-// }
-export default function TCanvas(containerElement){
-  const canvas = createCanvas(document, containerElement);
-  const sceneManager = new SceneManager(canvas);
-
-
-	var camera = sceneManager.getCamera();
-  var plane = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 1));
-  // var raycaster = new THREE.Raycaster();
-	// var edge = new THREE.Vector2();
-  // var edgePoint = new THREE.Vector3();
-	const createScene = new MapScene(sceneManager);
-	const grid = new Grid(sceneManager);
-	const LEFT_EDGE = {x: -1, y: 0};
-	const RIGHT_EDGE = {x: 1, y: 0};
+export class ThreeCanvas{
+  canvas: HTMLCanvasElement;
+  sceneManager: SceneManager;
   
+  constructor(container: HTMLElement){
+    this.canvas = this.createCanvas(document, container);
+    this.sceneManager = new SceneManager(this.canvas);
 
+    var camera = this.sceneManager.getCamera();
+    var plane = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 1));
+    // var raycaster = new THREE.Raycaster();
+    // var edge = new THREE.Vector2();
+    // var edgePoint = new THREE.Vector3();
+    const createScene = new MapScene(this.sceneManager);
+    const grid = new Grid(this.sceneManager);
+    const LEFT_EDGE = {x: -1, y: 0};
+    const RIGHT_EDGE = {x: 1, y: 0};
   
+    this.bindEventListeners();
+    this.render();
+  }
 
-
- bindEventListeners();
-  render();
-	
-  function createCanvas(document, containerElement) {
+  createCanvas(document: HTMLDocument, containerElement: HTMLElement) {
     const canvas = document.createElement('canvas');
     containerElement.appendChild(canvas);
     return canvas;
   }
 
-  function bindEventListeners() {
-    window.addEventListener( 'resize', resizeCanvas, false );
-    resizeCanvas();
+  bindEventListeners() {
+    window.addEventListener( 'resize', this.resizeCanvas, false );
+    this.resizeCanvas();
   }
   
-  function resizeCanvas() {
-    canvas.style.width = '100%';
-    canvas.style.height= '100%';
+  resizeCanvas() {
+    this.canvas.style.width = '100%';
+    this.canvas.style.height= '100%';
     // canvas.width = canvas.offsetWidth;
     // canvas.height = canvas.offsetHeight;
-    sceneManager.onWindowResize();
+    this.sceneManager.onWindowResize();
   }
 
-  function render() {
-    requestAnimationFrame(render);
-    sceneManager.update();
+  render = ( ) => {
+    requestAnimationFrame(this.render);
+    this.sceneManager.update();
   }
+}
+export default function TCanvas(containerElement){
+  
 }
