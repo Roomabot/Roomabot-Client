@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import logo from '../logo.svg';
 import { Box, Button, Container, CssBaseline, Divider, makeStyles, TextField, Typography } from '@material-ui/core';
-
+import { connect } from '@giantmachines/redux-websocket'
+import { useDispatch } from 'react-redux'
 const useStyles = makeStyles(theme=>({
   root: {
     display: 'grid',
@@ -14,6 +15,17 @@ const useStyles = makeStyles(theme=>({
 function Connect(props) {
   const classes = useStyles()
   const [roomabotIP , setIP] = useState(props.lastIP)
+  const dispatch = useDispatch()
+  
+  const handleConnect = () => {
+    // () => props.setConnected(true, roomabotIP)
+    console.info('Connecting to the ws server')
+    const wss = `wss://${roomabotIP}:6001` //my-server.com
+    dispatch(connect(wss))
+    
+  }
+    
+
   return (
     <Box p={3} className={classes.root}>
     <Typography variant="h3">
@@ -31,7 +43,7 @@ function Connect(props) {
     <Divider style={{margin: '8px'}} />
     <Button 
       variant="outlined"
-      onClick={() => props.setConnected(true, roomabotIP)}
+      onClick={handleConnect}
     >
       Connect to Roomabot
     </Button>
