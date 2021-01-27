@@ -13,6 +13,10 @@ import CanvasScene from './components/Canvas';
 
 const KEY_EVENT = {DOWN: 0, UP: 1}
 const KEY_FORWARD = "ArrowUp"
+const KEY_W = "w"
+const KEY_A = "a"
+const KEY_S = "s"
+const KEY_D = "d"
 const KEY_LEFT = "ArrowLeft"
 const KEY_BACK = "ArrowDown"
 const KEY_RIGHT = "ArrowRight"
@@ -68,18 +72,22 @@ function Map(props) {
 		var k;
     switch (e.key) {
       case KEY_FORWARD:
+      case KEY_W:
 				k = type === KEY_EVENT.DOWN ? DRIVE.FORWARD : DRIVE.STOPPED
         drive(socket, k, prev)
         break
       case KEY_BACK:
+			case KEY_S:
 				k = type === KEY_EVENT.DOWN ? DRIVE.BACK : DRIVE.STOPPED
         drive(socket, k, prev)
         break
 			case KEY_RIGHT:
+			case KEY_D:
 				k = type === KEY_EVENT.DOWN ? DRIVE.CW : DRIVE.STOPPED
         drive(socket, k, prev)
         break
       case KEY_LEFT:
+			case KEY_A:
 				k = type === KEY_EVENT.DOWN ? DRIVE.CCW : DRIVE.STOPPED
         drive(socket, k, prev)
         break

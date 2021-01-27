@@ -14,14 +14,16 @@ const useStyles = makeStyles(()=>({
   }
 }))
 
+const lastIP = localStorage.getItem("ip")
 function App() {
   const classes = useStyles()
-  const [roomabotIP, setIP] = useState('192.168.0.142')
+  const [roomabotIP, setIP] = useState(lastIP)
   const [connected, setConnected] = useState(false)
 
   const onConnect = (status, ip) => {
-    setConnected(true)
     setIP(ip)
+    localStorage.setItem('ip', ip)
+    setConnected(status)
   }
 
   return (
@@ -30,7 +32,7 @@ function App() {
       <div className={classes.root}>
         {
           !connected &&
-          <Connect setConnected={setConnected}/>
+          <Connect lastIP={lastIP} setConnected={onConnect}/>
         }
         { connected && 
           <Dashboard IP={roomabotIP}/>
