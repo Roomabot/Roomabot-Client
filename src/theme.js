@@ -8,39 +8,11 @@ export const Theme = createMuiTheme({
             "'Roboto', sans-serif"
           ]
         },
-        // h1: {
-        //   fontFamily: [
-        //     "'Source Sans Pro', sans-serif"
-        //   ].join(','),
-        // },
-        // h2: {
-        //   fontFamily: [
-        //     "'Source Sans Pro', sans-serif"
-        //   ].join(','),
-        //   fontWeight: 700
-        // },
-        // h3: {
-        //   fontFamily: [
-        //     "'Source Sans Pro', sans-serif"
-        //   ].join(','),
-        //   fontWeight: 700
-        // },
-        // h4: {
-        //   fontFamily: [
-        //     "'Source Sans Pro', sans-serif"
-        //   ].join(','),
-        //   fontWeight: 700
-        // },
-        // h6: {
-        //   fontFamily: [
-        //     "'Source Sans Pro', sans-serif"
-        //   ].join(',')
-        // }
     },
     palette: {
       // type: "dark",
       primary: {
-          main: '#704cb6',
+          main: '#eb4e23',
       },
       secondary: {
           main: '#D270FF'

@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme=>({
 function Connect(props) {
   const classes = useStyles()
   const [roomabotIP , setIP] = useState(props.lastIP)
+  const {error} = props
   return (
     <Box p={3} className={classes.root}>
     <Typography variant="h3">
@@ -31,10 +32,15 @@ function Connect(props) {
     <Divider style={{margin: '8px'}} />
     <Button 
       variant="outlined"
-      onClick={() => props.setConnected(true, roomabotIP)}
+      onClick={() => props.connect(true, roomabotIP)}
     >
       Connect to Roomabot
     </Button>
+    { error && 
+      <Typography>
+        {error}
+      </Typography>
+    }
     </Box>
   )
 }

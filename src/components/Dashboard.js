@@ -7,7 +7,7 @@ import { Container, CssBaseline, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme=>({
   root:{
-    height: '100vh',
+    position: "absolute",
     width:'100vw',
     padding: theme.spacing(2),
     display: 'grid',
@@ -24,26 +24,20 @@ const useStyles = makeStyles(theme=>({
 
 function Dashboard(props) {
 
-  const [key, setKey] = useState('')
   const classes = useStyles()
-  
-  const { IP } = props
   return (
     <div className={classes.root}>
       <div className={classes.bar}>
-        <Typography variant="h3">
+        {/* <Typography variant="h3">
           Map
-        </Typography>
+        </Typography> */}
         <div className={classes.keyStatus}>
           <Typography variant="h5">
-            Driving : {key}
+            Driving : {props.drive}
           </Typography>
         </div>
       </div>
-      <Box p={3}>
-        <Map IP={IP} onKey={k => setKey(k)}/>
-        {/* <DrivingControls/> */}
-      </Box>
+      
     </div>
 
   )

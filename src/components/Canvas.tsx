@@ -5,9 +5,16 @@ import { ThreeCanvas } from '../threeJS/main'
 
 const useStyles = makeStyles(theme=>({
   root:{
-    border: '1px solid grey',
-    borderRadius: theme.spacing(1)
+    // border: '1px solid grey',
+    // borderRadius: theme.spacing(1),
+    width:'100vw',
+    // padding: theme.spacing(2),
+    display: 'grid',
+    gridTemplateRows: '54px auto',
+    overflowY: 'hidden',
+    height: '100%'
   }
+  
 }))
 function CanvasScene (props){
   const classes = useStyles()

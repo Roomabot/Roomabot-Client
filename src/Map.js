@@ -1,5 +1,5 @@
 import { Box, Button } from '@material-ui/core';
-import yaml from 'js-yaml';
+
 import React, { useEffect, useState } from 'react'
 import socketIOClient from "socket.io-client"
 import CanvasScene from './components/Canvas';
@@ -11,95 +11,11 @@ import CanvasScene from './components/Canvas';
 */ 
 // const ENDPOINT = "http://192.168.0.142:6001";
 
-const KEY_EVENT = {DOWN: 0, UP: 1}
-const KEY_FORWARD = "ArrowUp"
-const KEY_W = "w"
-const KEY_A = "a"
-const KEY_S = "s"
-const KEY_D = "d"
-const KEY_LEFT = "ArrowLeft"
-const KEY_BACK = "ArrowDown"
-const KEY_RIGHT = "ArrowRight"
-const DRIVE = { STOPPED: "Stopped", FORWARD: "Forward", BACK: "Back", CCW: 'CCW', CW: 'CW'}
-
 function Map(props) {
-	
-  // const [key, props.onKey] = useState('')
-	const [data, setData] = useState(0)
-	const [key, setKey] = useState(DRIVE.STOPPED)
-	const [map, setMap] = useState(null)
-	
-	useEffect(() => {
-		// TODO: abstract and clean up code
-		const WS_ENDPOINT = `wss://${props.IP}:6001`
-		console.log('ON MESAGE')
-		const socket = new WebSocket(WS_ENDPOINT)
-		var prev = { instruction: DRIVE.STOPPED };
-		const keyDownHandler = (e) => handleKeyEvent(e, socket, KEY_EVENT.DOWN, prev)
-    const keyUpHandler = (e) => handleKeyEvent(e, socket, KEY_EVENT.UP, prev)
-    document.addEventListener('keydown', keyDownHandler)
-    document.addEventListener('keyup', keyUpHandler)
-		socket.onmessage = function (event) {
-			try {
-				const doc = yaml.load(event.data);
-				setMap(map)
-				console.log(doc);
-			} catch (e) {
-				console.log(e);
-			}
-			setData(event.data);
-		}
-		
-		// CLEAN UP THE EFFECT
-    return () => {
-			document.removeEventListener('keydown', keyDownHandler)
-      document.addEventListener('keyup', keyUpHandler)
-			socket.onmessage = null
-		}
-	
-	}, [props.IP]);
-	
-	const drive = (socket, instrc, prev) => {
-		if (instrc === prev.instruction){
-			return null
-		}
-		socket.send(instrc)
-		prev.instruction = instrc 
-		props.onKey(instrc)
-	}
-
-	const handleKeyEvent = (e, socket, type, prev) => {
-		var k;
-    switch (e.key) {
-      case KEY_FORWARD:
-      case KEY_W:
-				k = type === KEY_EVENT.DOWN ? DRIVE.FORWARD : DRIVE.STOPPED
-        drive(socket, k, prev)
-        break
-      case KEY_BACK:
-			case KEY_S:
-				k = type === KEY_EVENT.DOWN ? DRIVE.BACK : DRIVE.STOPPED
-        drive(socket, k, prev)
-        break
-			case KEY_RIGHT:
-			case KEY_D:
-				k = type === KEY_EVENT.DOWN ? DRIVE.CW : DRIVE.STOPPED
-        drive(socket, k, prev)
-        break
-      case KEY_LEFT:
-			case KEY_A:
-				k = type === KEY_EVENT.DOWN ? DRIVE.CCW : DRIVE.STOPPED
-        drive(socket, k, prev)
-        break
-      default:
-        break
-    }
-  }
+	const {map} = props
+  
 	return (
-		<Box>
-			{/* { data } */}
-			<CanvasScene map={map}/>		
-		</Box>
+		<CanvasScene map={map}/>		
 	)
 }
 

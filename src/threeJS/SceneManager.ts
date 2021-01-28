@@ -137,14 +137,14 @@ export default class SceneManager {
 
     onWindowResize = () => {
         // const { width, height } = this.renderer.domElement;
-        // const canvas = renderer.domElement;
-        // camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        // camera.updateProjectionMatrix();
+        // const canvas = this.renderer.domElement;
+        // this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        // this.camera.updateProjectionMatrix();
 
         let canvas = document.getElementById('canvas-div') 
         // this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
+        // this.camera.updateProjectionMatrix();
         
-        this.renderer.setSize(canvas.clientWidth, 700);
+        this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
     }
 }

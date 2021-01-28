@@ -1,6 +1,7 @@
 
 .App-logo {
   height: 40vmin;
+  color: #eb4e23;
   pointer-events: none;
 }
 
@@ -21,7 +22,7 @@ canvas{
 
 
 .App-link {
-  color: #704cb6;
+  color: #eb4e23;
 }
 
 @keyframes App-logo-float {

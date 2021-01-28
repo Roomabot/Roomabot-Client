@@ -27,18 +27,18 @@ export class ThreeCanvas{
     this.render();
   }
 
-  createCanvas(document: HTMLDocument, containerElement: HTMLElement) {
+  createCanvas = (document: HTMLDocument, containerElement: HTMLElement) => {
     const canvas = document.createElement('canvas');
     containerElement.appendChild(canvas);
     return canvas;
   }
 
-  bindEventListeners() {
+  bindEventListeners = () => {
     window.addEventListener( 'resize', this.resizeCanvas, false );
     this.resizeCanvas();
   }
   
-  resizeCanvas() {
+  resizeCanvas = () => {
     this.canvas.style.width = '100%';
     this.canvas.style.height= '100%';
     // canvas.width = canvas.offsetWidth;
