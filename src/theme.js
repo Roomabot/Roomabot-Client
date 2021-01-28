@@ -5,7 +5,7 @@ export const Theme = createMuiTheme({
     typography: {
         allVariants:{
           fontFamily: [
-            "'Roboto', sans-serif"
+            "'Merriweather Sans', sans-serif"
           ]
         },
     },

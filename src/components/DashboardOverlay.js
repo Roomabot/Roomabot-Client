@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme=>({
   }
 }))
 
-function Dashboard(props) {
+function DashboardOverlay(props) {
 
   const classes = useStyles()
   return (
@@ -43,4 +43,4 @@ function Dashboard(props) {
   )
 }
 
-export default Dashboard
+export default DashboardOverlay

@@ -3,10 +3,13 @@ import './App.css';
 import Map from './Map';
 import { AppBar, Box, Button, Container, CssBaseline, IconButton, makeStyles, Toolbar, Typography } from '@material-ui/core';
 import Connect from './components/Connect';
-import Dashboard from './components/Dashboard';
+import DashboardOverlay from './components/DashboardOverlay';
 import yaml from 'js-yaml';
 import LoadIcon from '@material-ui/icons/ReplayOutlined'
 import { Folder, Pause, SaveOutlined } from '@material-ui/icons';
+import { ServiceCommand } from './msg/ServiceCommand'
+import { UserMessage } from './msg/UserMessage'
+import { MessageTypes } from './msg/MessageTypes';
 
 const useStyles = makeStyles(()=>({
   root: {
@@ -25,6 +28,9 @@ const useStyles = makeStyles(()=>({
   title: {
     flexGrow: 1,
   },
+  disconnect: {
+    marginLeft: '1em'
+  }
 }))
 
 const KEY_EVENT = {DOWN: 0, UP: 1}
@@ -45,21 +51,48 @@ function App() {
   const [roomabotIP, setIP] = useState(lastIP)
   const [connected, setConnected] = useState(false)
   const [error, setError] = useState('')
+  const [connecting, setConnecting] = useState(false)
+  const [paused, setPaused] = useState()
+
   const onConnect = (status, ip) => {
     setIP(ip)
+    setConnecting(false)
     localStorage.setItem('ip', ip)
     setConnected(status)
   }
-  const onError = (e) => setError(e)
+
+  const onPause = (pause) => {
+    setPaused(pause)
+    const msg = { 
+      type: MessageTypes.SERVICE_COMMAND,
+      data: {
+        command: ''
+      }
+    }
+    
+  } 
+  
+  const disconnect = () => {
+    socket.close()
+    setConnected(false)
+  }
+
+  const onError = (e) => {
+    setConnecting(false)
+    setError('Could not establish a connection to Roomabot. Try to restart Roomabot if the problem persists.')
+  }
   // const [key, props.onKey] = useState('')
 	const [data, setData] = useState(0)
 	const [key, setKey] = useState(DRIVE.STOPPED)
 	const [map, setMap] = useState(null)
 	const connect = (status, ip) => {
+    setConnecting(true)
     const WS_ENDPOINT = `wss://${ip}:6001`
     socket = new WebSocket(WS_ENDPOINT)
+    
     socket.onopen = ( ) => onConnect(status, ip)
-    socket.onerror = () => onError()
+    socket.onclose = (e) => onError(e)
+    socket.onerror = (e) => onError(e)
     socket.onmessage = function (event) {
 			try {
 				const doc = yaml.load(event.data);
@@ -142,15 +175,27 @@ function App() {
               Roomabot
             </Typography>
             <span></span>
-            <IconButton title="Pause Mapping" color="inherit">
-              <Pause/>
-            </IconButton>
-            <IconButton title="Load Saved Map" color="inherit">
-              <Folder/>
-            </IconButton>
-            <IconButton title="Save Current Map" color="inherit">
-              <SaveOutlined/>
-            </IconButton>
+            {
+              connected && 
+              <React.Fragment>
+                <IconButton title="Pause Mapping" color="inherit">
+                  <Pause onClick={() => onPause(true)}/>
+                </IconButton>
+                <IconButton title="Load Saved Map" color="inherit">
+                  <Folder/>
+                </IconButton>
+                <IconButton title="Save Current Map" color="inherit">
+                  <SaveOutlined/>
+                </IconButton>
+                <Button 
+                  className={classes.disconnect}
+                  variant="contained"
+                  onClick={disconnect}
+                >
+                  Disconnect
+                </Button>
+              </React.Fragment>
+            }
           </Toolbar>
         </AppBar>
       </React.Fragment>
@@ -158,11 +203,11 @@ function App() {
         <Toolbar/>
         {
           !connected &&
-          <Connect lastIP={lastIP} connect={connect} error={error}/>
+          <Connect lastIP={lastIP} connect={connect} error={error} loading={connecting}/>
         }
         { connected && 
           <React.Fragment>
-            <Dashboard IP={roomabotIP} drive={key}/>
+            <DashboardOverlay IP={roomabotIP} drive={key}/>
             <Map/>
             {/* <DrivingControls/> */}
           </React.Fragment>
