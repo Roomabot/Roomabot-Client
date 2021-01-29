@@ -37,7 +37,6 @@ function DashboardOverlay(props) {
           </Typography>
         </div>
       </div>
-      
     </div>
 
   )

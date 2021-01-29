@@ -57,6 +57,7 @@ function App() {
   const onConnect = (status, ip) => {
     setIP(ip)
     setConnecting(false)
+    setError('')
     localStorage.setItem('ip', ip)
     setConnected(status)
   }
@@ -69,7 +70,6 @@ function App() {
         command: ''
       }
     }
-    
   } 
   
   const disconnect = () => {
@@ -79,6 +79,7 @@ function App() {
 
   const onError = (e) => {
     setConnecting(false)
+    setConnected(false)
     setError('Could not establish a connection to Roomabot. Try to restart Roomabot if the problem persists.')
   }
   // const [key, props.onKey] = useState('')
@@ -114,7 +115,6 @@ function App() {
     const keyUpHandler = (e) => handleKeyEvent(e, KEY_EVENT.UP, prev)
     document.addEventListener('keydown', keyDownHandler)
     document.addEventListener('keyup', keyUpHandler)
-		
 		
 		// CLEAN UP THE EFFECT
     return () => {

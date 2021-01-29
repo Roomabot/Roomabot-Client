@@ -16,18 +16,20 @@ const useStyles = makeStyles(theme=>({
   }
   
 }))
+const threeCanvas = new ThreeCanvas()
 function CanvasScene (props){
   const classes = useStyles()
   var threeContainer = null;
-  const [canvas, setCanvas] = useState(null)
   
   useEffect(()=>{
-    const tCanvas = new ThreeCanvas(threeContainer)
-	  setCanvas(tCanvas)
+    threeCanvas.init(threeContainer)
   }, [threeContainer])
-
+  
   useEffect(() => {
-  }, [props.map])
+    return () => {
+      threeCanvas.unBindEventListeners()
+    }
+  }, [])
 
   return (
     <div 
