@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ReactComponent as Logo } from '../logo.svg';
-import { Box, Button, CircularProgress, Container, CssBaseline, Divider, makeStyles, TextField, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress, Divider, makeStyles, TextField, Typography } from '@material-ui/core';
+import { useDispatch } from 'react-redux'
+import { connect } from '@giantmachines/redux-websocket/dist';
+// import { connect } from '../core/websocket/WebsocketActions';
 
 const useStyles = makeStyles(theme=>({
   root: {
@@ -31,6 +34,14 @@ function Connect(props) {
   const classes = useStyles()
   const [roomabotIP , setIP] = useState(props.lastIP)
   const { loading, error } = props
+  const dispatch = useDispatch()
+  
+  const tryConnection = () => {
+    const WSS_URL = `wss://${roomabotIP}:6001`
+    console.info('attempting to connect with IP', roomabotIP)
+    dispatch(connect(WSS_URL))
+  }
+
   return (
     <Box p={3} className={classes.root}>
     <Logo className={classes.logo}/>
@@ -48,7 +59,7 @@ function Connect(props) {
     <Divider style={{margin: '8px'}} />
     <Button 
       variant="outlined"
-      onClick={() => props.connect(true, roomabotIP)}
+      onClick={() => tryConnection() /*props.connect(true, roomabotIP)*/}
       className={classes.connect}
     >
       { loading ? 
