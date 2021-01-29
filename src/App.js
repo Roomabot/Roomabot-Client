@@ -178,8 +178,8 @@ function App() {
             {
               connected && 
               <React.Fragment>
-                <IconButton title="Pause Mapping" color="inherit">
-                  <Pause onClick={() => onPause(true)}/>
+                <IconButton title="Pause Mapping" color="inherit" onClick={() => onPause(true)}>
+                  <Pause />
                 </IconButton>
                 <IconButton title="Load Saved Map" color="inherit">
                   <Folder/>
