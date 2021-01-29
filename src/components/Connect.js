@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { ReactComponent as Logo } from '../logo.svg';
 import { Box, Button, CircularProgress, Divider, makeStyles, TextField, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
-import { connect } from '@giantmachines/redux-websocket/dist';
+import { connect } from '../core/websocket/WebsocketActions'
 // import { connect } from '../core/websocket/WebsocketActions';
+import { useSelector } from 'react-redux'
+import { roomabot_closed_reason, roomabot_connecting, roomabot_connection_error } from '../core/websocket/websocketReducer';
 
 const useStyles = makeStyles(theme=>({
   root: {
@@ -33,15 +35,16 @@ const useStyles = makeStyles(theme=>({
 function Connect(props) {
   const classes = useStyles()
   const [roomabotIP , setIP] = useState(props.lastIP)
-  const { loading, error } = props
+  const connecting = useSelector(roomabot_connecting)
   const dispatch = useDispatch()
-  
+  const error = useSelector(roomabot_connection_error)
+
   const tryConnection = () => {
     const WSS_URL = `wss://${roomabotIP}:6001`
     console.info('attempting to connect with IP', roomabotIP)
-    dispatch(connect(WSS_URL))
+    dispatch(connect({url:WSS_URL}))
   }
-
+  
   return (
     <Box p={3} className={classes.root}>
     <Logo className={classes.logo}/>
@@ -59,10 +62,10 @@ function Connect(props) {
     <Divider style={{margin: '8px'}} />
     <Button 
       variant="outlined"
-      onClick={() => tryConnection() /*props.connect(true, roomabotIP)*/}
+      onClick={() => tryConnection() }
       className={classes.connect}
     >
-      { loading ? 
+      { connecting ? 
         <CircularProgress size={24}/>
         :
         'Connect to Roomabot'

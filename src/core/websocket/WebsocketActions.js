@@ -9,11 +9,11 @@ import {
   WEBSOCKET_SEND,
 } from '@giantmachines/redux-websocket';
 
-export const connect = createAction(WEBSOCKET_CONNECT)
-export const disconnect = createAction(WEBSOCKET_DISCONNECT)
-export const send = createAction(WEBSOCKET_SEND)
-// TODO: change the verbaige?
-export const message = createAction(WEBSOCKET_MESSAGE)
-export const close = createAction(WEBSOCKET_CLOSED)
-export const error = createAction(WEBSOCKET_ERROR)
-export const open = createAction(WEBSOCKET_OPEN)
+export const prefix = "ROOMABOT_WS"
+export const connect = createAction(`${prefix}::${WEBSOCKET_CONNECT}`)
+export const closeConnection = createAction(`${prefix}::${WEBSOCKET_DISCONNECT}`)
+export const send = createAction(`${prefix}::${WEBSOCKET_SEND}`)
+export const message = createAction(`${prefix}::${WEBSOCKET_MESSAGE}`)
+export const close = createAction(`${prefix}::${WEBSOCKET_CLOSED}`)
+export const error = createAction(`${prefix}::${WEBSOCKET_ERROR}`)
+export const open = createAction(`${prefix}::${WEBSOCKET_OPEN}`)
