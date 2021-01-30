@@ -9,7 +9,7 @@ export class ThreeCanvas{
   canvas: HTMLCanvasElement;
   sceneManager: SceneManager;
   
-  constructor(container: HTMLElement){
+  init(container: HTMLElement){
     this.canvas = this.createCanvas(document, container);
     this.sceneManager = new SceneManager(this.canvas);
 
@@ -36,6 +36,10 @@ export class ThreeCanvas{
   bindEventListeners = () => {
     window.addEventListener( 'resize', this.resizeCanvas, false );
     this.resizeCanvas();
+  }
+
+  unBindEventListeners = () => {
+    window.removeEventListener('resize', this.resizeCanvas)
   }
   
   resizeCanvas = () => {
