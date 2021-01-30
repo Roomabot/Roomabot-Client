@@ -94,8 +94,10 @@ function DrivingControls() {
   
   return (
     <div className={classes.status}>
-      <Typography variant="h6">
-        Driving: {command}
+      <Typography>
+        <strong>
+          Driving: {command}
+        </strong>
       </Typography>
     </div>
   )

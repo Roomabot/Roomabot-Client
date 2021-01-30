@@ -14,10 +14,9 @@ const useStyles = makeStyles(theme=>({
     top: '64px'
   },
   bar: {
-    padding: '0 24px',
     display: 'flex',
     alignItems:'center',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-end'
   }
 }))
 
