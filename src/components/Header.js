@@ -5,7 +5,7 @@ import { Folder, Pause, PlayArrowOutlined, PlayArrowRounded, SaveOutlined } from
 import { roomabot_connected, roomabot_connecting, roomabot_connection_error, roomabot_ip } from '../core/websocket/websocketReducer';
 import { closeConnection, send } from '../core/websocket/WebsocketActions';
 import SimpleDialog from './SimpleDialog';
-import { roomabot_mapping_on, START } from '../core/data/dataReducer';
+import { LOAD, roomabot_mapping_on, SAVE, START } from '../core/data/dataReducer';
 
 const useStyles = makeStyles(theme=>({
   title: {
@@ -51,6 +51,21 @@ function Header() {
     setLoading(true)
     dispatch(send({
       command: START,
+      arg1: '',
+      arg2: ''
+    }))
+  }
+  
+  const onSave = () => {
+    dispatch(send({
+      command: SAVE,
+      arg1: '',
+      arg2: ''
+    }))
+  }
+  const onLoad = () => {
+    dispatch(send({
+      command: LOAD,
       arg1: '',
       arg2: ''
     }))
@@ -104,10 +119,16 @@ function Header() {
                       (loading ? <CircularProgress size={24} color="textPrimary"/> : <PlayArrowRounded/>)
                   }
                 </IconButton>
-                <IconButton title="Load Saved Map" color="inherit">
+                <IconButton 
+                  title="Load Saved Map" 
+                  color="inherit"
+                  onClick={onLoad}
+                >
                   <Folder/>
                 </IconButton>
-                <IconButton title="Save Current Map" color="inherit">
+                <IconButton title="Save Current Map" color="inherit"
+                  onClick={onSave}
+                >
                   <SaveOutlined/>
                 </IconButton>
                 <Button 

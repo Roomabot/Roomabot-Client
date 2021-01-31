@@ -2,6 +2,8 @@ import { makeStyles } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
 import '../App.css'
 import { ThreeCanvas } from '../threeJS/main'
+import { useSelector } from 'react-redux'
+import { roomabot_map } from '../core/data/dataReducer'
 
 const useStyles = makeStyles(theme=>({
   root:{
@@ -20,7 +22,16 @@ const threeCanvas = new ThreeCanvas()
 function CanvasScene (props){
   const classes = useStyles()
   var threeContainer = null;
+  const map = useSelector(roomabot_map)
   
+  useEffect(() => {
+    const mapScene = threeCanvas.getMapScene()
+    if (mapScene && map){
+      const occupancyGrid = mapScene.getOccupancyGrid()
+      occupancyGrid.updateMap(map)
+    }
+  }, [map])
+
   useEffect(()=>{
     threeCanvas.init(threeContainer)
   }, [threeContainer])

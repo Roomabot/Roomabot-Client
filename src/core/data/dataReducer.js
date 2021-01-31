@@ -1,12 +1,6 @@
-import { createReducer, createSlice, current } from '@reduxjs/toolkit';
+import { createReducer } from '@reduxjs/toolkit';
 import { 
-  connect,
-  disconnect,
-  send,
   message,
-  close,
-  error,
-  open,
 } from '../websocket/WebsocketActions'
 
 let initialState = {
@@ -27,15 +21,18 @@ export const dataReducer = createReducer(initialState, (builder) => {
       if (msg.command){
         switch (msg.command) {
           case CONNECTION_STATUS:
-            state.mapping = msg.arg1 === "1" 
+            state.mapping = msg.arg1 === "1"
             break;
           default:
             break;
         }
-
       }
+      else{ // map
+        state.map = action.payload.message
+      } 
     })
     
 })
 
+export const roomabot_map = state => state.data.map
 export const roomabot_mapping_on = state => state.data.mapping

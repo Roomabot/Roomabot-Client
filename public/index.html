@@ -28,6 +28,39 @@
     -->
     <title>Roomabot UI</title>
   </head>
+  <script type="x-shader/x-vertex" id="vertexshader">
+
+    attribute float alpha;
+
+    varying float vAlpha;
+
+    void main() {
+
+        vAlpha = alpha;
+
+        vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+        gl_PointSize = 8.0;
+
+        gl_Position = projectionMatrix * mvPosition;
+
+    }
+
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentshader">
+
+    uniform vec3 color;
+
+    varying float vAlpha;
+
+    void main() {
+
+        gl_FragColor = vec4( color, vAlpha );
+
+    }
+
+</script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>

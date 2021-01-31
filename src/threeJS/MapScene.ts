@@ -10,4 +10,7 @@ export default class MapScene{
         this.map = new OccupancyGrid(sceneManager);
     }
 
+    getOccupancyGrid = () => {
+        return this.map
+    }
 }

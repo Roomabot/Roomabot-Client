@@ -26,5 +26,8 @@ export default configureStore({
       ignoredActionPaths: ['payload.event'],
       ignoredActions: ignoreActions
     },
+    immutableCheck: {
+      ignoredPaths: ['data.map']
+    }
   }).concat(websocketMiddleware)
 });

@@ -8,7 +8,8 @@ import Grid from './Grid';
 export class ThreeCanvas{
   canvas: HTMLCanvasElement;
   sceneManager: SceneManager;
-  
+  mapScene: MapScene
+
   init(container: HTMLElement){
     this.canvas = this.createCanvas(document, container);
     this.sceneManager = new SceneManager(this.canvas);
@@ -18,13 +19,17 @@ export class ThreeCanvas{
     // var raycaster = new THREE.Raycaster();
     // var edge = new THREE.Vector2();
     // var edgePoint = new THREE.Vector3();
-    const createScene = new MapScene(this.sceneManager);
+    this.mapScene = new MapScene(this.sceneManager);
     const grid = new Grid(this.sceneManager);
     const LEFT_EDGE = {x: -1, y: 0};
     const RIGHT_EDGE = {x: 1, y: 0};
   
     this.bindEventListeners();
     this.render();
+  }
+
+  getMapScene = ( ) => {
+    return this.mapScene
   }
 
   createCanvas = (document: HTMLDocument, containerElement: HTMLElement) => {
