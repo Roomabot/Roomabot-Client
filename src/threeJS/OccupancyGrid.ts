@@ -36,7 +36,7 @@ export class OccupancyGrid implements SceneSubject{
           positions[ 3*k + 2 ] = j * 0.05; // z
 
           
-          let val = data === -1 ? 1 : (data === 100 ? .6 : .2);
+          let val = data === -1 ? 1 : (data === 100 ? .2 : .6);
           color.setRGB(val, val, val)
           const intensity = ( 5 + 0.1 ) * 5;
           colors[ 3 * k ] = color.r;
@@ -85,8 +85,6 @@ export class OccupancyGrid implements SceneSubject{
       // const pcBuffer = 
       const geometry = this.generateMap();
       const pointSize = 0.1;
-      // const material = new THREE.PointsMaterial( { size: pointSize, vertexColors: true  } );
-      const uniforms = { color: { value: new THREE.Color( 0xffff00 ) }};
       var shaderMaterial = new THREE.ShaderMaterial( {
         vertexColors: true,
         // uniforms:       uniforms,/
