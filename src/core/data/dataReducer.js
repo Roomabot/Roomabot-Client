@@ -17,19 +17,19 @@ export const dataReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(message, (state, action) => {
     // map to state (deserialize is done with middleware)
-      let msg = action.payload.message
-      if (msg.command){
-        switch (msg.command) {
-          case CONNECTION_STATUS:
-            state.mapping = msg.arg1 === "1"
-            break;
-          default:
-            break;
-        }
-      }
-      else{ // map
-        state.map = action.payload.message
-      } 
+      // let msg = action.payload.message
+      // if (msg){
+      //   switch (msg.command) {
+      //     case CONNECTION_STATUS:
+      //       state.mapping =  true// msg.arg1 === "1"
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      // }
+      // else{ // map
+        state.map = action.payload
+      // } 
     })
     
 })

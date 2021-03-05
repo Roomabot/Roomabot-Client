@@ -18,7 +18,13 @@ const useStyles = makeStyles(theme=>({
   }
   
 }))
+// initalize canvas instance
 const threeCanvas = new ThreeCanvas()
+
+/**
+ * Primary Container for the Map
+ * @param props ReactProps
+ */
 function CanvasScene (props){
   const classes = useStyles()
   var threeContainer = null;

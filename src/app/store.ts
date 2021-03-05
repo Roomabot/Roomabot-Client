@@ -11,11 +11,21 @@ import {
   error,
   open,
 } from '../core/websocket/WebsocketActions'
+import RosMiddleware from '../core/ros/rosMiddleware';
 
 
 const ignoreActions = [close.type, connect.type, closeConnection.type,
-error.type, message.type, open.type, send.type
-] 
+error.type, message.type, open.type, send.type]
+
+export const rosMiddleware = RosMiddleware({
+  prefix: 'ROS',
+  onOpen: socket => {
+    // @ts-ignore
+    window.__socket = socket; // eslint-disable-line no-underscore-dangle,
+  },
+  // deserializer: yaml.load
+});
+
 export default configureStore({
   reducer: {
     websocket: websocketReducer,
@@ -29,5 +39,5 @@ export default configureStore({
     immutableCheck: {
       ignoredPaths: ['data.map']
     }
-  }).concat(websocketMiddleware)
+  }).concat(rosMiddleware)
 });

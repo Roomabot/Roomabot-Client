@@ -22,6 +22,7 @@ export const websocketReducer = createReducer(initialState, (builder) => {
     // console.info('connect called')
       state.attempting = false
       state.connected = false
+      console.error(action.payload)
       state.error = 'Could not establish a connection to Roomabot. Try to restart Roomabot if the problem persists.'
     })
     .addCase(connect, (state, action) => {
@@ -30,8 +31,9 @@ export const websocketReducer = createReducer(initialState, (builder) => {
     })
     .addCase(open, (state, action) => {
     // console.info('connect called')
-      let url = action.payload.target?.url
-      state.connectedIP = url.replace("wss://", "").replace(/(:\d*)\//, "")
+      // let url = action.payload.url
+      // state.connectedIP = url.replace("ws://", "").replace(/(:\d*)\//, "")
+      state.connectedIP = 'ws://192.168.0.142'
       state.attempting = false
       state.connected = true
       
