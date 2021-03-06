@@ -6,7 +6,8 @@ import {
   ROS_CLOSE,
   ROS_DISCONNECT,
   ROS_CONNECT,
-  ROS_SUB
+  ROS_SUB,
+  ROS_UNSUB
 } from './rosActions'
 import { Action } from '@reduxjs/toolkit';
 
@@ -29,6 +30,7 @@ const RosMiddleware = (rawOptions?: RosOptions): Middleware => {
     [ROS_DISCONNECT]: reduxRos.disconnect,
     [ROS_CONNECT]: reduxRos.connect,
     [ROS_SUB]: reduxRos.subscribe,
+    [ROS_UNSUB]: reduxRos.unsubscribe,
   };
 
   // Middleware function.

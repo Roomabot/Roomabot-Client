@@ -82,14 +82,14 @@ function Header() {
 
   return (
     <React.Fragment>
-      <SimpleDialog 
+      {/* <SimpleDialog 
         open={connected && !mappingOn && !dismissed} 
         title="Mapping" 
         confirmDisabled={loading}
         text={"Roomabot is not mapping currently."} 
         confirmText={loading ? 'Starting...' : 'Start Mapping'}
         onClose={handleDialogAction}
-      />
+      /> */}
         <AppBar position="fixed">
           <Toolbar>
             <div className={classes.title}>

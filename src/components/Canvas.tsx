@@ -4,7 +4,7 @@ import '../App.css'
 import { ThreeCanvas } from '../threeJS/main'
 import { useDispatch, useSelector } from 'react-redux'
 import { roomabot_map } from '../core/data/dataReducer'
-import { subscribe } from '../core/websocket/WebsocketActions';
+import { subscribe, unsubscribe } from '../core/websocket/WebsocketActions';
 import { ROS_TOPICS } from '../core/ros/rosTopics';
 
 const useStyles = makeStyles(theme=>({
@@ -48,6 +48,7 @@ function CanvasScene (props){
   useEffect(() => {
     dispatch(subscribe(ROS_TOPICS.MAP))
     return () => {
+      dispatch(unsubscribe(ROS_TOPICS.MAP))
       threeCanvas.unBindEventListeners()
     }
   }, [])

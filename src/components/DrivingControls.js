@@ -2,7 +2,7 @@ import { Button, makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { send } from '../core/websocket/WebsocketActions'
 import { useDispatch } from 'react-redux'
-
+import ROSLIB from 'roslib'
 
 const KEY_EVENT = {DOWN: 0, UP: 1}
 const KEY_FORWARD = "ArrowUp"
@@ -25,6 +25,11 @@ const useStyles = makeStyles(theme=>({
 }))
 function DrivingControls() {
   const socket = window.__socket
+  var driveTopic = new ROSLIB.Topic({
+      ros : socket,
+      name : '/user_input',
+      messageType : 'std_msgs/String'
+  });
   const [command, setCommand] = useState(DRIVE.STOPPED)
   const dispatch = useDispatch()
   const classes = useStyles()
@@ -32,11 +37,11 @@ function DrivingControls() {
   const drive = (c, prev) => {
 		if (c === prev.instruction){
 			return null
-		}
-		dispatch(send({
-        command: 'drive',
-        data: c
-    }))
+    }
+    var command = new ROSLIB.Message({
+      data : c
+    });
+		driveTopic.publish(command)
 		prev.instruction = c 
 		setCommand(c)
   }

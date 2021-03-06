@@ -1,7 +1,7 @@
 import { RosOptions } from './rosOptions';
 import ROSLIB from 'roslib'
 import { Action, createAction, Dispatch, MiddlewareAPI, PayloadAction } from '@reduxjs/toolkit';
-import { open, message } from '../websocket/WebsocketActions'
+import { open, message, error } from '../websocket/WebsocketActions'
 import { RosTopic } from './rosTopics';
 /**
  * ReduxROS
@@ -45,7 +45,7 @@ export class ReduxROS{
       url: payload.url
     })
     this.ros.on('connection', () => this.handleOpen(dispatch, prefix, this.options.onOpen))
-    this.ros.on('error', (err) => this.handleError(dispatch, prefix, err))
+    this.ros.on('error', (err) => this.handleError(dispatch, err))
     this.ros.on('close', () => this.handleClose(dispatch, prefix))
 
     // this.websocket.addEventListener('message', (event) =>
@@ -150,8 +150,8 @@ export class ReduxROS{
    * @param {string} prefix
    * @param {Event} event
    */
-  private handleError = (dispatch: Dispatch, prefix: string, error) => {
-    dispatch(error(null, new Error(error), prefix));
+  private handleError = (dispatch: Dispatch, err: any) => {
+    dispatch(error(new Error(err)));
 
     // Conditionally attempt reconnection if enabled and applicable
     // const { reconnectOnError } = this.options;
