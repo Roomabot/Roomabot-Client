@@ -40,7 +40,7 @@ function Connect(props) {
   const error = useSelector(roomabot_connection_error)
 
   const tryConnection = () => {
-    const WSS_URL = `ws://${roomabotIP}:9090`
+    const WSS_URL = `wss://${roomabotIP}:9090`
     console.info('attempting to connect with IP', roomabotIP)
     dispatch(connect({url:WSS_URL}))
   }
