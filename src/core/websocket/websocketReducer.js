@@ -33,6 +33,7 @@ export const websocketReducer = createReducer(initialState, (builder) => {
     // console.info('connect called')
       // let url = action.payload.url
       // state.connectedIP = url.replace("ws://", "").replace(/(:\d*)\//, "")
+      console.warn('CONNECTED')
       state.connectedIP = 'ws://192.168.0.142'
       state.attempting = false
       state.connected = true

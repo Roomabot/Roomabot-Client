@@ -2,6 +2,7 @@ import { RosOptions } from './rosOptions';
 import ROSLIB from 'roslib'
 import { Action, createAction, Dispatch, MiddlewareAPI, PayloadAction } from '@reduxjs/toolkit';
 import { open, message } from '../websocket/WebsocketActions'
+import { RosTopic } from './rosTopics';
 /**
  * ReduxROS
  * @class
@@ -11,6 +12,7 @@ import { open, message } from '../websocket/WebsocketActions'
 export class ReduxROS{
 
   ros: any
+  currentTopics = {}
   lastConnectPayload: any;
   url: string;
   
@@ -49,56 +51,43 @@ export class ReduxROS{
     // this.websocket.addEventListener('message', (event) =>
     //   this.handleMessage(dispatch, prefix, deserializer, event)
     // );
-    var mapTopic = new ROSLIB.Topic({
-      ros : this.ros,
-      name : '/map',
-      messageType : 'nav_msgs/OccupancyGrid'
-    })
-
-    mapTopic.subscribe(message => {
-      console.log('map recieved')
-      this.handleMessage(dispatch, message)
-    })
+    
 
   };
 
   /**
-   * Subsribes to a ROS topic
+   * Subscribes to a ROS topic
    * @param {MiddlewareAPI} store
    * @param {Action} action
    */
-  subscribe = ({ dispatch }: MiddlewareAPI, { payload }: PayloadAction<{topic: string}>) => {
-    this.close();
-    /**
-     * Subribes to a topic and listens for any updates. 
-     */
+  subscribe = ({ dispatch }: MiddlewareAPI, { payload }: PayloadAction<RosTopic>) => {
     
-    // prefix needed to distinguish ros specific actions
-    const { prefix } = this.options;
-    this.topic = payload.topic
-    this.lastConnectPayload = payload;
     // create new ros connection
-    this.ros = new ROSLIB.Ros({
-      url: payload.url
-    })
-    this.ros.on('connection', () => this.handleOpen(dispatch, prefix, this.options.onOpen))
-    this.ros.on('error', (err) => this.handleError(dispatch, prefix, err))
-    this.ros.on('close', () => this.handleClose(dispatch, prefix))
+    const { topic, msgType } = payload
+    
+    if (this.currentTopics[topic]){
+      this.currentTopics[topic].unsubscribe()
+    }
 
-    // this.websocket.addEventListener('message', (event) =>
-    //   this.handleMessage(dispatch, prefix, deserializer, event)
-    // );
-    var mapTopic = new ROSLIB.Topic({
+    const rosTopic = new ROSLIB.Topic({
       ros : this.ros,
-      name : '/map',
-      messageType : 'nav_msgs/OccupancyGrid'
+      name : topic,
+      messageType : msgType
     })
+    this.currentTopics[topic] =  rosTopic
+    rosTopic.subscribe(message => this.handleMessage(dispatch, {topic, message}))
+  
+  };
 
-    mapTopic.subscribe(message => {
-      console.log('map recieved')
-      this.handleMessage(dispatch, message)
-    })
-
+  /**
+   * WebSocket disconnect event handler.
+   *
+   * @throws {Error} Socket connection must exist.
+   */
+  unsubscribe = (topic: string) => {
+    if (this.currentTopics[topic]){
+      this.currentTopics[topic].unsubscribe()
+    }
   };
 
   /**

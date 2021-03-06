@@ -5,7 +5,8 @@ import { RosOptions } from './rosOptions';
 import { 
   ROS_CLOSE,
   ROS_DISCONNECT,
-  ROS_CONNECT
+  ROS_CONNECT,
+  ROS_SUB
 } from './rosActions'
 import { Action } from '@reduxjs/toolkit';
 
@@ -27,6 +28,7 @@ const RosMiddleware = (rawOptions?: RosOptions): Middleware => {
   const handlers = {
     [ROS_DISCONNECT]: reduxRos.disconnect,
     [ROS_CONNECT]: reduxRos.connect,
+    [ROS_SUB]: reduxRos.subscribe,
   };
 
   // Middleware function.
@@ -48,6 +50,7 @@ const RosMiddleware = (rawOptions?: RosOptions): Middleware => {
         try {
           handler(store, action);
         } catch (err) {
+          console.error(err)
           // TODO: Dispatch error event
           // dispatch(error(action, err, prefix));
         }
