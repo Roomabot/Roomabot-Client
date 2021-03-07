@@ -3,7 +3,7 @@
  */
 export interface RosTopic{
   topic: string
-  msgType: string,
+  msgType: string
 } 
 
 /**
