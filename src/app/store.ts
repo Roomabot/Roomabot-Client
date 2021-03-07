@@ -12,6 +12,7 @@ import {
   open,
 } from '../core/websocket/WebsocketActions'
 import RosMiddleware from '../core/ros/rosMiddleware';
+import { ROS_TOPICS } from '../core/ros/rosTopics';
 
 
 const ignoreActions = [close.type, connect.type, closeConnection.type,
@@ -37,7 +38,7 @@ export default configureStore({
       ignoredActions: ignoreActions
     },
     immutableCheck: {
-      ignoredPaths: ['data.map']
+      ignoredPaths: [`data.${ROS_TOPICS.MAP.topic}`]
     }
   }).concat(rosMiddleware)
 });

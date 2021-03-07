@@ -18,7 +18,7 @@ export class OccupancyGrid implements SceneSubject{
     private mapPoints: THREE.Points;
 
 
-    updatePoints= (positions, colors, alphas) =>{
+    updatePoints=(positions, colors, alphas) =>{
       const height = this.mapData.info.height
       const width = this.mapData.info.width
       const color = new THREE.Color()
@@ -105,8 +105,10 @@ export class OccupancyGrid implements SceneSubject{
       var positions = geometry.attributes.position
       var colors = geometry.attributes.color
       var alphas = geometry.attributes.alpha
+      var material = this.mapPoints.material as THREE.Material
       this.updatePoints(positions, colors, alphas)
       positions.needsUpdate = true
+      material.needsUpdate = true
       colors.needsUpdate = true
       alphas.needsUpdate = true
 

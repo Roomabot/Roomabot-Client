@@ -72,7 +72,8 @@ export class ReduxROS{
     const rosTopic = new ROSLIB.Topic({
       ros : this.ros,
       name : topic,
-      messageType : msgType
+      messageType : msgType,
+      compression: topic === '/map' ? 'cbor' : ''
     })
     this.currentTopics[topic] =  rosTopic
     rosTopic.subscribe(message => this.handleMessage(dispatch, {topic, message}))

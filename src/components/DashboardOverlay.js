@@ -28,9 +28,9 @@ function DashboardOverlay(props) {
 
   useEffect(() => {
     const statusTopic = {topic: '/status', msgType: 'roomabot/serviceCommand'}
-    dispatch(subscribe(statusTopic))
+    // dispatch(subscribe(statusTopic))
     return () => {
-      dispatch(unsubscribe(statusTopic))
+      // dispatch(unsubscribe(statusTopic))
     }
   }, [])
 
