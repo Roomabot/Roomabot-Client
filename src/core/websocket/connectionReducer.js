@@ -16,39 +16,36 @@ let initialState = {
   connectedIP: ''
 }
 
-export const websocketReducer = createReducer(initialState, (builder) => {
+export const connectionReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(error, (state, action) => {
-    // console.info('connect called')
       state.attempting = false
       state.connected = false
-      console.error(action.payload)
       state.error = 'Could not establish a connection to Roomabot. Try to restart Roomabot if the problem persists.'
+      console.info('ERROR', action.payload)
     })
     .addCase(connect, (state, action) => {
-      console.info('connect called')
       state.attempting = true
+      console.info('CONNECTING')
     })
     .addCase(open, (state, action) => {
-    // console.info('connect called')
-      // let url = action.payload.url
-      // state.connectedIP = url.replace("ws://", "").replace(/(:\d*)\//, "")
-      console.warn('CONNECTED')
-      state.connectedIP = 'ws://192.168.0.142'
+      let url = window.__socket.socket.url
+      state.connectedIP = url.replace("wss://", "").replace(/(:\d*)\//, "")
       state.attempting = false
       state.connected = true
+      console.info('CONNECTED')
       
     })
     .addCase(close, (state, action) => {
-    // console.info('connect called')
       state.attempting = false
       state.connected = false
+      console.info('CLOSED')
     })
     
 })
 
-export const roomabot_connecting = state => state.websocket.attempting
-export const roomabot_connected = state => state.websocket.connected
-export const roomabot_connection_error = state => state.websocket.error
-export const roomabot_ip = state => state.websocket.connectedIP
+export const roomabot_connecting = state => state.connection.attempting
+export const roomabot_connected = state => state.connection.connected
+export const roomabot_connection_error = state => state.connection.error
+export const roomabot_ip = state => state.connection.connectedIP
 
