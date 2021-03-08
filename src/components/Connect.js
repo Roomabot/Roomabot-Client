@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { connect } from '../core/websocket/WebsocketActions'
 // import { connect } from '../core/websocket/WebsocketActions';
 import { useSelector } from 'react-redux'
-import { roomabot_closed_reason, roomabot_connecting, roomabot_connection_error } from '../core/websocket/websocketReducer';
+import { roomabot_closed_reason, roomabot_connecting, roomabot_connection_error } from '../core/websocket/connectionReducer';
 
 const useStyles = makeStyles(theme=>({
   root: {

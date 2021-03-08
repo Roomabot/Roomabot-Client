@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { websocketMiddleware } from '../core/websocket/websocketMiddleware'
-import { websocketReducer } from '../core/websocket/websocketReducer';
+import { connectionReducer } from '../core/websocket/connectionReducer';
 import { dataReducer } from '../core/data/dataReducer'
 import { 
   connect,
@@ -29,7 +29,7 @@ export const rosMiddleware = RosMiddleware({
 
 export default configureStore({
   reducer: {
-    websocket: websocketReducer,
+    connection: connectionReducer,
     data: dataReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({

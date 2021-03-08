@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux' 
 import { AppBar, Button, CircularProgress, IconButton, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import { Folder, Pause, PlayArrowOutlined, PlayArrowRounded, SaveOutlined } from '@material-ui/icons'
-import { roomabot_connected, roomabot_connecting, roomabot_connection_error, roomabot_ip } from '../core/websocket/websocketReducer';
-import { closeConnection, send } from '../core/websocket/WebsocketActions';
+import { roomabot_connected, roomabot_connecting, roomabot_connection_error, roomabot_ip } from '../core/websocket/connectionReducer';
+import { closeConnection, dismissError, send, subscribe, unsubscribe } from '../core/websocket/WebsocketActions';
 import SimpleDialog from './SimpleDialog';
-import { LOAD, roomabot_mapping_on, SAVE, START } from '../core/data/dataReducer';
+import { LOAD, roomabot_mapping_on, roomabot_error, SAVE, START } from '../core/data/dataReducer';
+import ROSLIB from 'roslib'
+
 
 const useStyles = makeStyles(theme=>({
   title: {
@@ -24,15 +26,39 @@ const useStyles = makeStyles(theme=>({
   }
 }))
 
+var serviceRequestTopic = null
+
 function Header() {
-  
+  const socket = window.__socket
   const classes = useStyles()
   const dispatch = useDispatch()
   const roomabotIP = useSelector(roomabot_ip)
   const connected = useSelector(roomabot_connected)
+  const error = useSelector(roomabot_error)
   const mappingOn = useSelector(roomabot_mapping_on)
   const [loading, setLoading] = useState(false)
   const [dismissed, setDismissed] = useState(false)
+  if (serviceRequestTopic === null && socket){
+    
+  }
+
+  useEffect(() => {
+    const errorTopic = {topic: '/errors', msgType: 'roomabot/serviceCommand'}
+    if (connected){
+      dispatch(subscribe(errorTopic))
+      serviceRequestTopic = new ROSLIB.Topic({
+        ros : socket,
+        name : '/service_request',
+        messageType : 'roomabot/serviceCommand'
+      });
+    }
+    else{
+      serviceRequestTopic = null;
+    }
+    return () => {
+      dispatch(unsubscribe(errorTopic))
+    }
+  }, [connected])
 
   const disconnect = () => {
     dispatch(closeConnection())  
@@ -41,34 +67,59 @@ function Header() {
   }
 
   const onPause = () => {
-    dispatch(send({
-      command: 'serviceRequest',
-      arg0: '1'
-    }))  
+    if (serviceRequestTopic){
+      var command = new ROSLIB.Message({
+        command: 'serviceRequest',
+        arg0: '1'
+      });
+      serviceRequestTopic.publish(command)  
+    }
+    else{
+      console.warn('request called when socket is not open')
+    }
+
   }
 
   const onPlay = () => {
     setLoading(true)
-    dispatch(send({
-      command: START,
-      arg1: '',
-      arg2: ''
-    }))
+    if (serviceRequestTopic){
+      var command = new ROSLIB.Message({
+        command: START,
+        arg1: '',
+        arg2: ''
+      });
+      serviceRequestTopic.publish(command)  
+    }
+    else{
+      console.warn('request called when socket is not open')
+    }
   }
   
   const onSave = () => {
-    dispatch(send({
-      command: SAVE,
-      arg1: '',
-      arg2: ''
-    }))
+    if (serviceRequestTopic){
+      var command = new ROSLIB.Message({
+        command: SAVE,
+        arg1: '',
+        arg2: ''
+      });
+      serviceRequestTopic.publish(command)  
+    }
+    else{
+      console.warn('request called when socket is not open')
+    }
   }
   const onLoad = () => {
-    dispatch(send({
-      command: LOAD,
-      arg1: '',
-      arg2: ''
-    }))
+    if (serviceRequestTopic){
+      var command = new ROSLIB.Message({
+        command: LOAD,
+        arg1: '',
+        arg2: ''
+      });
+      serviceRequestTopic.publish(command)  
+    }
+    else{
+      console.warn('request called when socket is not open')
+    }
   }
 
   const handleDialogAction = (action) => {
@@ -82,14 +133,22 @@ function Header() {
 
   return (
     <React.Fragment>
-      {/* <SimpleDialog 
+      <SimpleDialog 
         open={connected && !mappingOn && !dismissed} 
         title="Mapping" 
         confirmDisabled={loading}
         text={"Roomabot is not mapping currently."} 
         confirmText={loading ? 'Starting...' : 'Start Mapping'}
         onClose={handleDialogAction}
-      /> */}
+      />
+      <SimpleDialog 
+        open={connected && error} 
+        title="Error" 
+        // confirmDisabled={loading}
+        text={error} 
+        confirmText={'OK'}
+        onClose={() => dispatch(dismissError)}
+      />
         <AppBar position="fixed">
           <Toolbar>
             <div className={classes.title}>
