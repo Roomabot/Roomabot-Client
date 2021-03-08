@@ -22,11 +22,13 @@ export default class SceneManager {
     constructor(canvas: any){
         this.clock = new THREE.Clock();
         this.canvas = canvas;
+        
+        let canvasContainer = document.getElementById('canvas-div') 
 
         console.warn('Canvas deets', canvas)
         const screenMetaData = {
-            width: 1000,
-            height: 300,
+            width: canvasContainer.clientWidth,
+            height: canvasContainer.clientHeight,
             canvas: canvas
         }
         
@@ -81,31 +83,13 @@ export default class SceneManager {
         const nearPlane = 1;
         const farPlane = 1000; 
         const camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
-        camera.position.set( 0 , 4 , 11);
+        camera.position.set( 0 , 4 , 0);
         camera.lookAt(new THREE.Vector3(0,0,0));
         
     
         return camera;
     }
 
-    // createSceneSubjects = (scene, loader) => {
-    //     // TODO: Export this function so main controller can control the initial load
-    //     const sceneSubjects = [
-    //         new Cube(scene, loader, cubeModel),
-    //         new Portal(scene, loader, bluePortal, {
-    //             scale: new THREE.Vector3(0.5,0.5,0.5),
-    //             position: new THREE.Vector3(-15, 0, 0),
-    //             rotation: new THREE.Vector3(0, Math.PI/1.5, 0),
-    //         }),
-    //         new Portal(scene, loader, orangePortal, {
-    //             scale: new THREE.Vector3(0.5,0.5,0.5),
-    //             position: new THREE.Vector3(15, 0, 0),
-    //             rotation: new THREE.Vector3(0, -Math.PI/1.5,0),
-    //         })
-    //     ];
-
-    //     return sceneSubjects;
-    // }
     
     getModelLoader = () => {
         return new GLTFLoader();
@@ -142,9 +126,10 @@ export default class SceneManager {
         // this.camera.updateProjectionMatrix();
 
         let canvas = document.getElementById('canvas-div') 
-        // this.camera.aspect = window.innerWidth / window.innerHeight;
-        // this.camera.updateProjectionMatrix();
-        
-        this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        const width = canvas.clientWidth
+        const height = canvas.clientHeight
+        this.camera.aspect = width / height;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(width, height);
     }
 }
