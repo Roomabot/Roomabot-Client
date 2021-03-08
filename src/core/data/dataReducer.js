@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { ROS_TOPICS } from '../ros/rosTopics';
 import { 
   message,
 } from '../websocket/WebsocketActions'
@@ -6,7 +7,9 @@ import {
 let initialState = {
   map: {},
   mapping: false,
-  error: ''
+  error: '',
+  topics: [],
+
 }
 export const CONNECTION_STATUS = "Connection Status"
 export const START = "Start"
@@ -16,23 +19,13 @@ export const LOAD = "Load"
 export const dataReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(message, (state, action) => {
-    // map to state (deserialize is done with middleware)
-      let msg = action.payload.message
-      if (msg.command){
-        switch (msg.command) {
-          case CONNECTION_STATUS:
-            state.mapping = msg.arg1 === "1"
-            break;
-          default:
-            break;
-        }
-      }
-      else{ // map
-        state.map = action.payload.message
-      } 
+      const { topic, message } = action.payload
+      state[topic] = message
     })
     
 })
 
-export const roomabot_map = state => state.data.map
+// export const roomabot_map = state => state.data.map
 export const roomabot_mapping_on = state => state.data.mapping
+
+export const roomabot_map = (state) => state.data[ROS_TOPICS.MAP.topic]

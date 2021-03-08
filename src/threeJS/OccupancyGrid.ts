@@ -1,7 +1,7 @@
 import  SceneSubject  from './SceneSubject'
 import * as THREE from 'three'
 import SceneManager from './SceneManager';
-import { BufferGeometry } from 'three';
+import { BufferAttribute, BufferGeometry } from 'three';
 import { MapData } from './MapData';
 
 export class OccupancyGrid implements SceneSubject{
@@ -18,7 +18,7 @@ export class OccupancyGrid implements SceneSubject{
     private mapPoints: THREE.Points;
 
 
-    updatePoints= (positions, colors, alphas) =>{
+    generate=(positions, colors, alphas) =>{
       const height = this.mapData.info.height
       const width = this.mapData.info.width
       const color = new THREE.Color()
@@ -48,6 +48,28 @@ export class OccupancyGrid implements SceneSubject{
         }
 
       }
+    }
+    updatePoints=(colors: THREE.BufferAttribute | THREE.InterleavedBufferAttribute, alphas: THREE.BufferAttribute | THREE.InterleavedBufferAttribute) =>{
+      const height = this.mapData.info.height
+      const width = this.mapData.info.width
+      const color = new THREE.Color()
+      let k = 0;
+      for ( let i = 0; i < height; i ++ ) {
+
+        for ( let j = 0; j < width; j ++ ) {
+
+          let indx = i + (width * j)
+          let data = this.mapData.data[indx]
+          
+          let val = data === -1 ? 1 : (data === 100 ? .2 : .6);
+          color.setRGB(val, val, val)
+          colors.setXYZ(k, color.r, color.g, color.b)
+
+          alphas.setX(k,data === -1 ? 0 : 1) 
+          k++
+        }
+
+      }
 
     }
     generateMap(){
@@ -59,7 +81,7 @@ export class OccupancyGrid implements SceneSubject{
       const colors = new Float32Array( numPoints * 3 );
       const alphas = new Float32Array( numPoints );
 
-      this.updatePoints(positions, colors, alphas)
+      this.generate(positions, colors, alphas)
       
       geometry.setAttribute('position', new THREE.BufferAttribute( positions, 3 ) );
       geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
@@ -105,8 +127,10 @@ export class OccupancyGrid implements SceneSubject{
       var positions = geometry.attributes.position
       var colors = geometry.attributes.color
       var alphas = geometry.attributes.alpha
-      this.updatePoints(positions, colors, alphas)
+      var material = this.mapPoints.material as THREE.Material
+      this.updatePoints(colors, alphas)
       positions.needsUpdate = true
+      material.needsUpdate = true
       colors.needsUpdate = true
       alphas.needsUpdate = true
 

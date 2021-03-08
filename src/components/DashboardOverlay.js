@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Map from '../Map'
 import DrivingControls from './DrivingControls'
 import { Container, CssBaseline, makeStyles } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { subscribe, unsubscribe } from '../core/websocket/WebsocketActions';
 
 
 const useStyles = makeStyles(theme=>({
@@ -21,6 +23,16 @@ const useStyles = makeStyles(theme=>({
 }))
 
 function DashboardOverlay(props) {
+  
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const statusTopic = {topic: '/status', msgType: 'roomabot/serviceCommand'}
+    // dispatch(subscribe(statusTopic))
+    return () => {
+      // dispatch(unsubscribe(statusTopic))
+    }
+  }, [])
 
   const classes = useStyles()
   return (

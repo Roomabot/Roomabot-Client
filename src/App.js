@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Map from './Map';
 import { CssBaseline, makeStyles, Toolbar } from '@material-ui/core';
@@ -6,7 +6,7 @@ import Connect from './components/Connect';
 import DashboardOverlay from './components/DashboardOverlay';
 import { roomabot_connected, roomabot_connecting, roomabot_connection_error, roomabot_ip } from './core/websocket/websocketReducer';
 import { useSelector, useDispatch } from 'react-redux'
-import { closeConnection } from './core/websocket/WebsocketActions';
+import { closeConnection, subscribe, unsubscribe } from './core/websocket/WebsocketActions';
 import Header from './components/Header';
 
 const useStyles = makeStyles(theme=>({
