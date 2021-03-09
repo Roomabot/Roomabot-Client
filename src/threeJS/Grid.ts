@@ -8,7 +8,7 @@ export default class Grid{
 
     constructor(private sceneManager: SceneManger){
         const size = 20;
-        const divisions = 25;
+        const divisions = 20;
         const axesHelper = new THREE.AxesHelper( 5 );
         const gridHelper = new THREE.GridHelper( size, divisions );
         sceneManager.addObject( axesHelper );

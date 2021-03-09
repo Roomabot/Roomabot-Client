@@ -42,6 +42,9 @@ export default class SceneManager {
 
     buildController(camera: THREE.PerspectiveCamera, renderer: THREE.Renderer): any {
         this.controls = new OrbitControls( camera, renderer.domElement );
+        // this.controls.minZoom = 3;
+        // this.controls.minZoom = 3;
+
     }
     
    // const sceneSubjects = createSceneSubjects(scene, loader);
@@ -49,12 +52,12 @@ export default class SceneManager {
     buildScene = () => {
         const scene = new THREE.Scene();
         var ambientLight = new THREE.AmbientLight( 0xcccccc );
-        scene.add( ambientLight );
+        // scene.add( ambientLight );
         // scene.background = new THREE.Color( 0x050505 );
         // scene.fog = new THREE.Fog( 0x050505, 2000, 3500 );
         var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8);
         directionalLight.position.set( 0, 4, 11 ).normalize();
-        scene.add( directionalLight );	
+        // scene.add( directionalLight );	
 
         return scene;
     }
@@ -79,11 +82,11 @@ export default class SceneManager {
 
     buildCamera = ({ width, height }) => {
         const aspectRatio = width / height;
-        const fieldOfView = 20;
+        const fieldOfView = 30;
         const nearPlane = 1;
         const farPlane = 1000; 
         const camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
-        camera.position.set( 0 , 4 , 0);
+        camera.position.set( 0 , 25 , 0);
         camera.lookAt(new THREE.Vector3(0,0,0));
         
     
