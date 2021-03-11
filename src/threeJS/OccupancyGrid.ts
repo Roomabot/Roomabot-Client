@@ -136,6 +136,11 @@ export class OccupancyGrid implements SceneSubject{
 
     }
 
+    getPointGeometry(): BufferGeometry{
+      if (!this.mapPoints) return
+      return this.mapPoints.geometry as BufferGeometry
+    }
+
     constructor(private sceneManager: SceneManager){
       this.sceneManager = sceneManager
       this.width = 80;

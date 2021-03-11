@@ -2,7 +2,7 @@ import { createReducer, createSlice } from '@reduxjs/toolkit';
 import { ROS_TOPICS } from '../ros/rosTopics';
 
 let initialState = {
-  currentTool: {},
+  currentTool: 0,
   history: []
 }
 
@@ -23,4 +23,6 @@ const toolSlice = createSlice({
 export const { selectTool } = toolSlice.actions;
 
 export const toolReducer = toolSlice.reducer
-export const current_tool = state => state.tools.currentTool
+export const current_tool = state => {
+  return state.tools.currentTool
+}

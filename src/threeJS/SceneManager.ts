@@ -41,10 +41,14 @@ export default class SceneManager {
     }
 
     buildController(camera: THREE.PerspectiveCamera, renderer: THREE.Renderer): any {
-        this.controls = new OrbitControls( camera, renderer.domElement );
-        this.controls.minDistance = 25; // min zoom distance
-        this.controls.maxDistance = 35; // max zoom distance
+        let controls = new OrbitControls( camera, renderer.domElement );
+        controls.minDistance = 25; // min zoom distance
+        controls.maxDistance = 35; // max zoom distance
+        return controls
+    }
 
+    getControls(): OrbitControls{
+        return this.controls
     }
     
    // const sceneSubjects = createSceneSubjects(scene, loader);
@@ -98,6 +102,9 @@ export default class SceneManager {
         return new GLTFLoader();
     }
 
+    /**
+     * Main ThreeJS render loop
+     */
     update = () => {
         if (this.controls){
             this.controls.update();
@@ -114,6 +121,10 @@ export default class SceneManager {
     
     addObject = (object: THREE.Object3D) => {
         this.scene.add(object);
+    }
+
+    removeObject = (object: THREE.Object3D) => {
+        this.scene.remove(object)
     }
     
     addSubject = (subject: SceneSubject) => {

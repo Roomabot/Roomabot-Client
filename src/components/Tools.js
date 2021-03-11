@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import { Typography, CssBaseline, makeStyles, Paper, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Drawer } from '@material-ui/core';
 import { AddLocationRounded, CreateRounded, DoubleArrowRounded, StraightenRounded } from '@material-ui/icons';
-import { selectTool } from '../core/tools/toolReducer';
+import { current_tool, selectTool } from '../core/tools/toolReducer';
 import { TOOL } from '../core/tools/model';
 const useStyles = makeStyles(theme=>({
   root: {
@@ -18,9 +18,11 @@ const useStyles = makeStyles(theme=>({
   },
   toolIcons: {
     display: 'grid',
-    // textAlign: 'center'
     gridTemplateColumns: '32px auto',
     gridTemplateRows: 'auto' 
+  },
+  selected: {
+    background: theme.palette.primary.main
   }
 }))
 const TOOLS = [
@@ -31,7 +33,7 @@ const TOOLS = [
 
 function Tools() {
   const classes = useStyles()
-  const selectedTool = useState('')
+  const currentTool = useSelector(current_tool)
   const dispatch = useDispatch()
   const handleToolSelection = (tool) => {
     dispatch(selectTool(tool))
@@ -54,7 +56,7 @@ function Tools() {
       </div>
       <List>
         {TOOLS.map((tool, index) => (
-          <ListItem button key={tool.name} onClick={() => handleToolSelection(tool.id)}>
+          <ListItem className={`${tool.id === currentTool ? classes.selected : ''}`} button key={tool.name} onClick={() => handleToolSelection(tool.id)}>
             <ListItemIcon style={{minWidth: '32px'}}>
               <Typography style={{textAlign: 'center'}}>{tool.icon}</Typography>
             </ListItemIcon>
