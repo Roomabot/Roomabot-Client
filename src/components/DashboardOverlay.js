@@ -5,6 +5,7 @@ import DrivingControls from './DrivingControls'
 import { Container, CssBaseline, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { subscribe, unsubscribe } from '../core/websocket/WebsocketActions';
+import Tools from './Tools';
 
 
 const useStyles = makeStyles(theme=>({
@@ -19,6 +20,9 @@ const useStyles = makeStyles(theme=>({
     display: 'flex',
     alignItems:'center',
     justifyContent: 'flex-end'
+  },
+  tools: {
+    display: 'grid',
   }
 }))
 
@@ -44,7 +48,9 @@ function DashboardOverlay(props) {
         <div className={classes.keyStatus}>
           <DrivingControls/>
         </div>
+        <div className={classes.tools}></div> 
       </div>
+      <Tools/>
     </div>
 
   )

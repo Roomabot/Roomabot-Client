@@ -13,6 +13,7 @@ import {
 } from '../core/websocket/WebsocketActions'
 import RosMiddleware from '../core/ros/rosMiddleware';
 import { ROS_TOPICS } from '../core/ros/rosTopics';
+import { toolReducer } from '../core/tools/toolReducer';
 
 
 const ignoreActions = [close.type, connect.type, closeConnection.type,
@@ -30,7 +31,8 @@ export const rosMiddleware = RosMiddleware({
 export default configureStore({
   reducer: {
     connection: connectionReducer,
-    data: dataReducer
+    data: dataReducer,
+    tools: toolReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
