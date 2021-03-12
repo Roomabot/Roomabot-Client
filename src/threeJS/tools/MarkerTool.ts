@@ -15,7 +15,7 @@ export class MarkerTool implements InteractiveTool{
    */
   addPoint: boolean = false 
   points: THREE.Vector3[]
-  markers: {[key: number]:THREE.Object3D}
+  markers: {[key: number]:THREE.Object3D} = {}
   keyCount: number = 1
 
   constructor(private controller: Tools, private sceneManager: SceneManager){}
