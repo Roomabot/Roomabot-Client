@@ -9,6 +9,7 @@ export const Theme = createMuiTheme({
           ]
         },
     },
+    toolbarWidth: 165,
     palette: {
       // type: "dark",
       primary: {

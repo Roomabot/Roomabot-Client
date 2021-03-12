@@ -1,6 +1,9 @@
 import * as THREE from 'three'
 import SceneManager from "../SceneManager";
 import { InteractiveTool, Tools } from "../Tools";
+import store from '../../app/store'
+import { ADJ_CELL_DIST } from '../OccupancyGrid';
+import { updateMeasuredDistance } from '../../core/tools/toolReducer';
 
 /**
  * Measures distance between two points
@@ -61,6 +64,13 @@ export class MeasureTool implements InteractiveTool{
     }
   }
 
+  getDistance(pointA: THREE.Vector3, pointB: THREE.Vector3){
+    let resolution = this.controller.getResolution()
+    let xDist = (pointA.x/ADJ_CELL_DIST - pointB.x/ADJ_CELL_DIST)*resolution
+    let yDist = (pointA.y/ADJ_CELL_DIST - pointB.y/ADJ_CELL_DIST)*resolution
+    return Math.sqrt(xDist**2 + yDist**2)
+  }
+
   drawAndMeasure(points: THREE.Vector3[]) {
     // draw
     const material = new THREE.LineBasicMaterial( { color: 0x0000ff, linewidth: 3 } );
@@ -70,6 +80,7 @@ export class MeasureTool implements InteractiveTool{
     this.sceneManager.addObject(this.line)
     
     // measure
+    store.dispatch(updateMeasuredDistance(this.getDistance(points[0], points[1])))
   }
 
 }

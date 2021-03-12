@@ -1,9 +1,7 @@
 import  SceneSubject  from './SceneSubject'
 import * as THREE from 'three'
 import SceneManager from './SceneManager';
-import { BufferAttribute, BufferGeometry, Vector3 } from 'three';
-import { MapData } from './MapData';
-import { ThreeCanvas } from './main';
+import { Vector3 } from 'three';
 import { OccupancyGrid } from './OccupancyGrid';
 import { TOOL } from '../core/tools/model';
 import { MeasureTool } from './tools/MeasureTool';
@@ -43,6 +41,7 @@ export class Tools implements SceneSubject{
   canvas: HTMLElement;
   measurePoints: THREE.Object3D[]
   tools: {};
+  public resolution: number
   // toolData: 
   constructor(private sceneManager: SceneManager, private occupanyGrid: OccupancyGrid){
     this.sceneManager = sceneManager
@@ -96,6 +95,15 @@ export class Tools implements SceneSubject{
     this.canvas.addEventListener('click', callback)
   }
 
+  /**
+   * Returns the map resolution.
+   * If map data not found, it returns 1.
+   */
+  getResolution = () => {
+    let mapData = this.occupanyGrid.getMapData()
+    if (!mapData) return 1
+    else return mapData.info.resolution
+  }
   
 
   setTool = (tool: TOOL) => {
@@ -118,7 +126,7 @@ export class Tools implements SceneSubject{
     return this.tool
   }
 
-  reset = (toolType: TOOL) => {
+  reset = () => {
 
   }
 

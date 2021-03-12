@@ -1,7 +1,5 @@
-import { Button, makeStyles, Typography } from '@material-ui/core'
+import { makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import { send } from '../core/websocket/WebsocketActions'
-import { useDispatch } from 'react-redux'
 import ROSLIB from 'roslib'
 
 const KEY_EVENT = {DOWN: 0, UP: 1}
@@ -17,8 +15,10 @@ const DRIVE = { STOPPED: "Stopped", FORWARD: "Forward", BACK: "Back", CCW: 'CCW'
 
 const useStyles = makeStyles(theme=>({
   status: {
-    borderRadius: theme.spacing(4),
-    boxShadow: theme.shadows[12],
+    textAlign: 'center',
+    width: theme.toolbarWidth,
+    borderRadius: theme.spacing(1.5),
+    boxShadow: theme.shadows[4],
     background: theme.palette.background.paper,
     padding: `${theme.spacing(1)}px ${theme.spacing(2)}px` 
   }
@@ -31,7 +31,6 @@ function DrivingControls() {
       messageType : 'std_msgs/String'
   });
   const [command, setCommand] = useState(DRIVE.STOPPED)
-  const dispatch = useDispatch()
   const classes = useStyles()
 
   const drive = (c, prev) => {

@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { websocketMiddleware } from '../core/websocket/websocketMiddleware'
 import { connectionReducer } from '../core/websocket/connectionReducer';
 import { dataReducer } from '../core/data/dataReducer'
 import { 
@@ -10,6 +9,7 @@ import {
   close,
   error,
   open,
+  subscribe,
 } from '../core/websocket/WebsocketActions'
 import RosMiddleware from '../core/ros/rosMiddleware';
 import { ROS_TOPICS } from '../core/ros/rosTopics';
@@ -17,7 +17,8 @@ import { toolReducer } from '../core/tools/toolReducer';
 
 
 const ignoreActions = [close.type, connect.type, closeConnection.type,
-error.type, message.type, open.type, send.type]
+error.type, message.type, open.type, send.type,subscribe.type
+]
 
 export const rosMiddleware = RosMiddleware({
   prefix: 'ROS',

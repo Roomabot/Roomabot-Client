@@ -1,11 +1,10 @@
-import { Box, Typography } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import Map from '../Map'
+import React, { useEffect } from 'react'
 import DrivingControls from './DrivingControls'
-import { Container, CssBaseline, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { subscribe, unsubscribe } from '../core/websocket/WebsocketActions';
 import Tools from './Tools';
+import ToolsData from './ToolsData';
 
 
 const useStyles = makeStyles(theme=>({
@@ -26,7 +25,7 @@ const useStyles = makeStyles(theme=>({
   }
 }))
 
-function DashboardOverlay(props) {
+function DashboardOverlay() {
   
   const dispatch = useDispatch()
 
@@ -50,6 +49,7 @@ function DashboardOverlay(props) {
         </div>
         <div className={classes.tools}></div> 
       </div>
+      <ToolsData/>
       <Tools/>
     </div>
 

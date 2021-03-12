@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import SceneManager from './SceneManager';
 import { BufferAttribute, BufferGeometry } from 'three';
 import { MapData } from './MapData';
-
+export const ADJ_CELL_DIST = 0.05
 export class OccupancyGrid implements SceneSubject{
     
     public map: THREE.Points;
@@ -17,7 +17,6 @@ export class OccupancyGrid implements SceneSubject{
     private count: number = 0
     private mapPoints: THREE.Points;
 
-
     generate=(positions, colors, alphas) =>{
       const height = this.mapData.info.height
       const width = this.mapData.info.width
@@ -30,10 +29,9 @@ export class OccupancyGrid implements SceneSubject{
           let indx = i + (width * j)
           let data = this.mapData.data[indx]
 
-          // grid helper is setup on xz plane
-          positions[ 3*k ] = i * 0.05; // x
+          positions[ 3*k ] = i * ADJ_CELL_DIST; // x
           positions[ 3*k + 1 ] = 0; // y
-          positions[ 3*k + 2 ] = j * 0.05; // z
+          positions[ 3*k + 2 ] = j * ADJ_CELL_DIST; // z
 
           
           let val = data === -1 ? 1 : (data === 100 ? .2 : .6);
@@ -49,6 +47,11 @@ export class OccupancyGrid implements SceneSubject{
 
       }
     }
+
+    getMapData = () => {
+      return this.mapData
+    }
+
     updatePoints=(colors: THREE.BufferAttribute | THREE.InterleavedBufferAttribute, alphas: THREE.BufferAttribute | THREE.InterleavedBufferAttribute) =>{
       const height = this.mapData.info.height
       const width = this.mapData.info.width

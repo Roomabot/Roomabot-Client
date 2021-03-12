@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Typography, CssBaseline, makeStyles, Paper, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Typography, makeStyles, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core';
 import { Drawer } from '@material-ui/core';
-import { AddLocationRounded, CreateRounded, DoubleArrowRounded, StraightenRounded } from '@material-ui/icons';
+import { AddLocationRounded, CreateRounded, StraightenRounded } from '@material-ui/icons';
 import { current_tool, selectTool } from '../core/tools/toolReducer';
 import { TOOL } from '../core/tools/model';
 const useStyles = makeStyles(theme=>({
@@ -11,8 +11,10 @@ const useStyles = makeStyles(theme=>({
     width:'10em'
   }, 
   drawer:{
-    height:'300px',
-    borderRadius: '0 8px 8px 0',
+    height:'auto',
+    width: theme.toolbarWidth,
+    borderRadius: theme.spacing(1.5),
+    margin: theme.spacing(2),
     top: '10%',
     boxShadow: theme.shadows[4]
   },
@@ -23,6 +25,10 @@ const useStyles = makeStyles(theme=>({
   },
   selected: {
     background: theme.palette.primary.main
+  },
+  header: {
+    textAlign: 'center',
+    padding:theme.spacing(1)
   }
 }))
 const TOOLS = [
@@ -42,7 +48,7 @@ function Tools() {
   return (
     // <Paper>
     <Drawer 
-      anchor="left"
+      anchor="right"
       variant="persistent" 
       classes={{ paper: classes.drawer }} 
       open={true}
@@ -50,12 +56,12 @@ function Tools() {
     >
       <div className={classes.header}>
         <Typography>
-         Tools 
+         <strong>Tools</strong> 
         </Typography>
-        <DoubleArrowRounded/>      
       </div>
+      <Divider/>
       <List>
-        {TOOLS.map((tool, index) => (
+        {TOOLS.map((tool) => (
           <ListItem className={`${tool.id === currentTool ? classes.selected : ''}`} button key={tool.name} onClick={() => handleToolSelection(tool.id)}>
             <ListItemIcon style={{minWidth: '32px'}}>
               <Typography style={{textAlign: 'center'}}>{tool.icon}</Typography>

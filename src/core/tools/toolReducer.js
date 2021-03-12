@@ -3,6 +3,9 @@ import { ROS_TOPICS } from '../ros/rosTopics';
 
 let initialState = {
   currentTool: 0,
+  measureData: {
+    distance: 0
+  },
   history: []
 }
 
@@ -17,12 +20,14 @@ const toolSlice = createSlice({
       // immutable state based off those changes
       state.currentTool = action.payload
     },
+    updateMeasuredDistance: (state, action) => {
+      state.measureData.distance = action.payload
+    }
   },
 });
 
-export const { selectTool } = toolSlice.actions;
+export const { selectTool, updateMeasuredDistance } = toolSlice.actions;
 
 export const toolReducer = toolSlice.reducer
-export const current_tool = state => {
-  return state.tools.currentTool
-}
+export const current_tool = state => state.tools.currentTool
+export const measuredDistance = state => state.tools.measureData.distance
