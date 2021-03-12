@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme=>({
     width: theme.toolbarWidth,
     borderRadius: theme.spacing(1.5),
     margin: theme.spacing(2),
-    top: '10%',
+    top: 'auto',
     boxShadow: theme.shadows[4]
   },
   toolIcons: {

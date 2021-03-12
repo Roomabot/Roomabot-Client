@@ -16,11 +16,6 @@ const useStyles = makeStyles(theme=>({
     overflowY: 'hidden',
     height: '100%'
   },
-  // Measure:{
-  //   cursor: 
-  // }
-
-  
 }))
 
 // initalize canvas instance
