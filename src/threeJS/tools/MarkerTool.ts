@@ -14,35 +14,48 @@ export class MarkerTool implements InteractiveTool{
    * Flag to capture raycast point on the next frame update
    */
   addPoint: boolean = false 
-
   points: THREE.Vector3[]
-  markers: THREE.Object3D[]
+  markers: {[key: number]:THREE.Object3D}
+  keyCount: number = 1
 
   constructor(private controller: Tools, private sceneManager: SceneManager){}
   
   active(isActive: boolean){
     if (isActive){
-      this.controller.canvas.style.cursor = 'crosshair'
+      this.controller.canvas.style.cursor = 'copy'
     }
     else{
       this.controller.canvas.style.cursor = 'default'
     }
   }
   
+  createMarker(){
+    let sphereGeometry = new THREE.SphereGeometry( 0.1, 32, 32 );
+    let sphereMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+    let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+    return sphere
+  }
+
   handleMouseClick(event: MouseEvent){
     this.addPoint = true
   }
 
   reset(){
-    this.markers.forEach(marker => {
-      this.sceneManager.removeObject(marker)
+    Object.keys(this.markers).forEach(key => {
+      this.sceneManager.removeObject(this.markers[key])
     })
   }
   
   update(raycastPoint: THREE.Vector3){
     if (this.addPoint){
-      this.
+      let marker = this.createMarker()
+      this.sceneManager.addObject(marker)
+      marker.position.copy(raycastPoint)
+      this.markers[this.keyCount] = marker
+      this.keyCount+=1
       this.addPoint = false
+      // show label creation
+      // dispatch()
     }
   } 
 }
