@@ -1,5 +1,4 @@
-import { createReducer, createSlice } from '@reduxjs/toolkit';
-import { ROS_TOPICS } from '../ros/rosTopics';
+import { createSlice } from '@reduxjs/toolkit';
 
 let initialState = {
   currentTool: 0,

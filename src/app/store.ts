@@ -37,7 +37,7 @@ export default configureStore({
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
-      ignoredActionPaths: ['payload.event'],
+      ignoredActionPaths: ['payload.event', 'data./map'],
       ignoredActions: ignoreActions
     },
     immutableCheck: {

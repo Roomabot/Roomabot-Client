@@ -73,7 +73,7 @@ export class MeasureTool implements InteractiveTool{
 
   drawAndMeasure(points: THREE.Vector3[]) {
     // draw
-    const material = new THREE.LineBasicMaterial( { color: 0x0000ff, linewidth: 3 } );
+    const material = new THREE.LineBasicMaterial( { color: 0x0000ff, linewidth: 5 } );
     const geometry = new THREE.BufferGeometry().setFromPoints( points )
     if (this.line) this.sceneManager.removeObject(this.line)
     this.line = new THREE.Line(geometry, material)

@@ -1,7 +1,7 @@
 import  SceneSubject  from './SceneSubject'
 import * as THREE from 'three'
 import SceneManager from './SceneManager';
-import { BufferAttribute, BufferGeometry } from 'three';
+import { BufferGeometry } from 'three';
 import { MapData } from './MapData';
 export const ADJ_CELL_DIST = 0.05
 export class OccupancyGrid implements SceneSubject{
@@ -14,7 +14,6 @@ export class OccupancyGrid implements SceneSubject{
 
     private mapNeedsUpdate: boolean;
     private mapData: MapData
-    private count: number = 0
     private mapPoints: THREE.Points;
 
     generate=(positions, colors, alphas) =>{
@@ -36,7 +35,6 @@ export class OccupancyGrid implements SceneSubject{
           
           let val = data === -1 ? 1 : (data === 100 ? .2 : .6);
           color.setRGB(val, val, val)
-          const intensity = ( 5 + 0.1 ) * 5;
           colors[ 3 * k ] = color.r;
           colors[ 3 * k + 1 ] = color.g;
           colors[ 3 * k + 2 ] = color.b;
@@ -109,7 +107,6 @@ export class OccupancyGrid implements SceneSubject{
     initMap = () => {
       // const pcBuffer = 
       const geometry = this.generateMap();
-      const pointSize = 0.1;
       var shaderMaterial = new THREE.ShaderMaterial( {
         vertexColors: true,
         // uniforms:       uniforms,/
