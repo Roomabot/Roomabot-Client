@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme=>({
     borderRadius: theme.spacing(1.5),
     margin: theme.spacing(2),
     top: 'auto',
+    border: 'none',
     boxShadow: theme.shadows[4]
   },
   toolIcons: {
@@ -24,7 +25,11 @@ const useStyles = makeStyles(theme=>({
     gridTemplateRows: 'auto' 
   },
   selected: {
-    background: theme.palette.primary.main
+    background: theme.palette.primary.main,
+    color: theme.palette.getContrastText(theme.palette.primary.main)
+  },
+  selectedIcon: {
+    color: theme.palette.getContrastText(theme.palette.primary.main)
   },
   header: {
     textAlign: 'center',
@@ -63,8 +68,8 @@ function Tools() {
       <List>
         {TOOLS.map((tool) => (
           <ListItem className={`${tool.id === currentTool ? classes.selected : ''}`} button key={tool.name} onClick={() => handleToolSelection(tool.id)}>
-            <ListItemIcon style={{minWidth: '32px'}}>
-              <Typography style={{textAlign: 'center'}}>{tool.icon}</Typography>
+            <ListItemIcon className={`${tool.id === currentTool ? classes.selectedIcon : ''}`} style={{minWidth: '32px'}}>
+              {tool.icon}
             </ListItemIcon>
             <ListItemText primary={tool.name} />
           </ListItem>

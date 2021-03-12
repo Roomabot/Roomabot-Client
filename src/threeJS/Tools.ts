@@ -5,6 +5,8 @@ import { Vector3 } from 'three';
 import { OccupancyGrid } from './OccupancyGrid';
 import { TOOL } from '../core/tools/model';
 import { MeasureTool } from './tools/MeasureTool';
+import { MarkerTool } from './tools/MarkerTool';
+import { DrawTool } from './tools/DrawTool';
 
 export interface InteractiveTool {
   /**
@@ -50,6 +52,8 @@ export class Tools implements SceneSubject{
     this.tools = {
       0: null, 
       [TOOL.MEASURE]: new MeasureTool(this, sceneManager),
+      [TOOL.MARKER]: new MarkerTool(this, sceneManager),
+      [TOOL.OVERLAY]: new DrawTool(this, sceneManager)
     }
     this.tool = new THREE.Object3D();    
 
@@ -106,6 +110,10 @@ export class Tools implements SceneSubject{
   }
   
 
+  /**
+   * Updates the tool selection and activates the feature for map
+   * @param tool Tool Selection
+   */
   setTool = (tool: TOOL) => {
     const orbitControls = this.sceneManager.getControls()
     
