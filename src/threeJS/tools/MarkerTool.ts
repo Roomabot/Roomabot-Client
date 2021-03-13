@@ -19,7 +19,9 @@ export class MarkerTool implements InteractiveTool{
   keyCount: number = 1
 
   constructor(private controller: Tools, private sceneManager: SceneManager){}
-  
+  handleMouseDown(event: MouseEvent){}
+  handleMouseUp(event: MouseEvent){}
+
   active(isActive: boolean){
     if (isActive){
       this.controller.canvas.style.cursor = 'copy'

@@ -1,5 +1,5 @@
-import { Button, makeStyles, Typography } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import { makeStyles, Typography } from '@material-ui/core'
+import React, {  } from 'react'
 import { measuredDistance } from '../core/tools/toolReducer'
 import { useSelector } from 'react-redux'
 

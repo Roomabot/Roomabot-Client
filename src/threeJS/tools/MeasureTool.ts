@@ -21,6 +21,8 @@ export class MeasureTool implements InteractiveTool{
   line: THREE.Line;
 
   constructor(private controller: Tools, private sceneManager: SceneManager){}
+  handleMouseDown(event: MouseEvent){}
+  handleMouseUp(event: MouseEvent){}
   
   active(isActive: boolean){
     if (isActive){

@@ -28,6 +28,16 @@ export interface InteractiveTool {
    * Called when there is a mouse click
    */
   handleMouseClick: (event: MouseEvent) => void
+
+  /**
+   * Called when mouse is pressed 
+   */
+  handleMouseDown: (event: MouseEvent) => void
+  
+  /**
+   * Called when mouse is let go
+   */
+  handleMouseUp: (event: MouseEvent) => void
 }
 
 export class Tools implements SceneSubject{ 
@@ -73,6 +83,16 @@ export class Tools implements SceneSubject{
     this.mousePos = new THREE.Vector2();
     document.addEventListener( 'mousemove', this.onDocumentMouseMove );
     this.canvas.addEventListener( 'click', this.handleClick);
+    this.canvas.addEventListener( 'mousedown', this.handleMouseDown);
+    this.canvas.addEventListener( 'mouseup', this.handleMouseUp);
+  }
+  handleMouseDown = (event: MouseEvent) =>{
+    if (this.currentTool){
+      this.currentTool.handleMouseDown(event)
+   }
+  }
+  handleMouseUp = (event: MouseEvent) => {
+    this.currentTool.handleMouseUp(event)
   }
   
   onDocumentMouseMove = (event: MouseEvent) => {
