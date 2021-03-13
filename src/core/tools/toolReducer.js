@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { TOOL } from './model';
 
 let initialState = {
-  currentTool: 0,
+  currentTool: TOOL.SELECTION,
   measureData: {
     distance: 0
   },

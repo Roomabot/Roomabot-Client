@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Typography, makeStyles, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core';
 import { Drawer } from '@material-ui/core';
-import { AddLocationRounded, CreateRounded, StraightenRounded } from '@material-ui/icons';
+import { AddLocationRounded, CreateRounded, MouseRounded, PanToolRounded, StraightenRounded } from '@material-ui/icons';
 import { current_tool, selectTool } from '../core/tools/toolReducer';
 import { TOOL } from '../core/tools/model';
 const useStyles = makeStyles(theme=>({
@@ -37,6 +37,7 @@ const useStyles = makeStyles(theme=>({
   }
 }))
 const TOOLS = [
+  {icon: <PanToolRounded/>, name: 'Pan', id: TOOL.PAN}, 
   {icon: <StraightenRounded/>, name: 'Measure', id: TOOL.MEASURE}, 
   {icon: <AddLocationRounded/>, name: 'Point', id: TOOL.MARKER},
   {icon: <CreateRounded/>, name: 'Markup', id: TOOL.OVERLAY},

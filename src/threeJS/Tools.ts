@@ -60,7 +60,7 @@ export class Tools implements SceneSubject{
     this.canvas = document.getElementById('canvas-div') 
 
     this.tools = {
-      0: null, 
+      [TOOL.PAN]: null, 
       [TOOL.MEASURE]: new MeasureTool(this, sceneManager),
       [TOOL.MARKER]: new MarkerTool(this, sceneManager),
       [TOOL.OVERLAY]: new DrawTool(this, sceneManager)
@@ -141,7 +141,7 @@ export class Tools implements SceneSubject{
     if (this.currentTool) this.currentTool.active(false)
 
     this.currentTool = this.tools[tool] 
-    if (tool === 0){
+    if (tool === TOOL.PAN){
       orbitControls.enabled = true
     }
     else {

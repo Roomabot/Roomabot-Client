@@ -35,7 +35,7 @@ function CanvasScene (props){
   useEffect(() => {
     if (threeCanvas){
       const mapScene = threeCanvas.getMapScene()
-      if (mapScene && selectedTool){
+      if (mapScene){
         const tools = mapScene.getTools()
         tools.setTool(selectedTool)
       }

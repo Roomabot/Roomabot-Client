@@ -1,5 +1,6 @@
 export enum TOOL{
-  MEASURE = 1,
+  PAN = 0,
+  MEASURE,
   OVERLAY,
   MARKER
 }
