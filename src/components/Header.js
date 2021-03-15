@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux' 
 import { AppBar, Button, CircularProgress, IconButton, makeStyles, Toolbar, Typography } from '@material-ui/core'
-import { Folder, Pause, PlayArrowOutlined, PlayArrowRounded, SaveOutlined } from '@material-ui/icons'
+import { Folder, Pause, PlayArrowOutlined, PlayArrowRounded, Replay, ReplayRounded, SaveOutlined } from '@material-ui/icons'
 import { roomabot_connected, roomabot_connecting, roomabot_connection_error, roomabot_ip } from '../core/websocket/connectionReducer';
 import { closeConnection, dismissError, send, subscribe, unsubscribe } from '../core/websocket/WebsocketActions';
 import SimpleDialog from './SimpleDialog';
@@ -173,7 +173,7 @@ function Header() {
                 >
                   {
                     mappingOn ? 
-                      <Pause /> 
+                      <ReplayRounded/> 
                     :
                       (loading ? <CircularProgress size={24} color="textPrimary"/> : <PlayArrowRounded/>)
                   }
