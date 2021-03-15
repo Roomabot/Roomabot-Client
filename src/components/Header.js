@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux' 
 import { AppBar, Button, CircularProgress, IconButton, makeStyles, Toolbar, Typography } from '@material-ui/core'
-import { Folder, Pause, PlayArrowOutlined, PlayArrowRounded, Replay, ReplayRounded, SaveOutlined } from '@material-ui/icons'
+import { Brightness1Rounded, Folder, Pause, PlayArrowOutlined, PlayArrowRounded, Replay, ReplayRounded, SaveOutlined } from '@material-ui/icons'
 import { roomabot_connected, roomabot_connecting, roomabot_connection_error, roomabot_ip } from '../core/websocket/connectionReducer';
 import { closeConnection, dismissError, send, subscribe, unsubscribe } from '../core/websocket/WebsocketActions';
 import SimpleDialog from './SimpleDialog';
@@ -16,13 +16,24 @@ const useStyles = makeStyles(theme=>({
     alignItems: 'center'
   },
   chip:{
-    background: theme.palette.background.paper,
-    borderRadius: theme.spacing(2),
-    padding: '0 8px',
+    // background: theme.palette.background.paper,
+    // borderRadius: theme.spacing(2),
+    // padding: '0 8px',
     marginLeft: '8px'
   },
   disconnect: {
     marginLeft: '1em'
+  },
+  arduinoOff: {
+    marginLeft: '4px',
+    animation:'blink 2s infinite',
+    fontSize: '10px',
+    color: theme.palette.warning.light
+  },
+  arduinoOn: {
+    fontSize: '10px',
+    marginLeft: '4px',
+    color: theme.palette.success.light
   }
 }))
 
@@ -35,8 +46,8 @@ function Header() {
   const roomabotIP = useSelector(roomabot_ip)
   const connected = useSelector(roomabot_connected)
   const error = useSelector(roomabot_error)
-  const mappingOn = useSelector(roomabot_mapping_on)
-  const [loading, setLoading] = useState(false)
+  const arduinoStatus = useSelector(roomabot_mapping_on)
+  const [loading, setLoading] = useState(true)
   const [dismissed, setDismissed] = useState(false)
   if (serviceRequestTopic === null && socket){
     
@@ -59,6 +70,14 @@ function Header() {
       dispatch(unsubscribe(errorTopic))
     }
   }, [connected])
+
+  useEffect(() => {
+    if (arduinoStatus){
+      setLoading(false)
+    }
+    return () => {
+    }
+  }, [arduinoStatus])
 
   const disconnect = () => {
     dispatch(closeConnection())  
@@ -133,14 +152,14 @@ function Header() {
 
   return (
     <React.Fragment>
-      <SimpleDialog 
-        open={connected && !mappingOn && !dismissed} 
+      {/* <SimpleDialog 
+        open={connected && !arduinoStatus && !dismissed} 
         title="Mapping" 
         confirmDisabled={loading}
         text={"Roomabot is not mapping currently."} 
         confirmText={loading ? 'Starting...' : 'Start Mapping'}
         onClose={handleDialogAction}
-      />
+      /> */}
       <SimpleDialog 
         open={connected && error} 
         title="Error" 
@@ -152,14 +171,19 @@ function Header() {
         <AppBar position="fixed">
           <Toolbar>
             <div className={classes.title}>
-              <Typography variant="h6" >
+              <Typography variant="h6" 
+                title={arduinoStatus ? "Bootup Complete" : "Initializing"} 
+              >
                 Roomabot
               </Typography>
               {/* { connected && <Chip label={roomabotIP}/>} */}
               { connected && 
-                <div className={classes.chip}>
-                  <Typography color="textSecondary" variant="body2">{roomabotIP}</Typography>
-                </div>
+                // <span className={classes.chip} >
+                  <Brightness1Rounded 
+                  title={arduinoStatus ? "Bootup Complete" : "Initializing"} 
+                  className={arduinoStatus ? classes.arduinoOn : classes.arduinoOff }/>
+                // </span>
+               //  <Typography color="textSecondary" variant="body2">{roomabotIP}</Typography>
               }
             </div>
             {/* <span></span> */}
@@ -167,12 +191,12 @@ function Header() {
               connected && 
               <React.Fragment>
                 <IconButton 
-                  title={mappingOn ? "Pause Mapping" : (loading ? "Loading..." : "Resume Mapping")} 
+                  title={arduinoStatus ? "Restart Mapping" : (loading ? "Loading..." : "Resume Mapping")} 
                   color="inherit"
-                  onClick={mappingOn && !loading ? onPause : onPlay}
+                  onClick={onPlay}
                 >
                   {
-                    mappingOn ? 
+                    arduinoStatus ? 
                       <ReplayRounded/> 
                     :
                       (loading ? <CircularProgress size={24} color="textPrimary"/> : <PlayArrowRounded/>)

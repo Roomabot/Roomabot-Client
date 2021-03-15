@@ -10,6 +10,12 @@
   /* width: 100vw;
   height: 100%; */
 }
+/* Group same frames together */
+@keyframes blink {
+  0%, 100% { opacity: 0; } /* more concise! */
+  50% { opacity: 1; }
+}
+
 canvas{
   border-radius: 8px;
 }
