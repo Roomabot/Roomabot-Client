@@ -42,7 +42,7 @@ export default class SceneManager {
 
     buildController(camera: THREE.PerspectiveCamera, renderer: THREE.Renderer): any {
         let controls = new OrbitControls( camera, renderer.domElement );
-        controls.minDistance = 25; // min zoom distance
+        controls.minDistance = 15; // min zoom distance
         controls.maxDistance = 35; // max zoom distance
         return controls
     }
