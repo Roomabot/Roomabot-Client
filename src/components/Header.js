@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppBar, Button, CircularProgress, IconButton, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import { Brightness1Rounded, Folder, Pause, PlayArrowOutlined, PlayArrowRounded, Replay, ReplayRounded, SaveOutlined } from '@material-ui/icons'
 import { roomabot_connected, roomabot_connecting, roomabot_connection_error, roomabot_ip } from '../core/websocket/connectionReducer';
-import { closeConnection, dismissError, send, subscribe, unsubscribe } from '../core/websocket/WebsocketActions';
+import { closeConnection, dismissError, message, send, subscribe, unsubscribe } from '../core/websocket/WebsocketActions';
 import SimpleDialog from './SimpleDialog';
-import { LOAD, roomabot_mapping_on, roomabot_error, SAVE, START } from '../core/data/dataReducer';
+import { LOAD, roomabot_mapping_on, roomabot_error, SAVE, START, roomabot_map } from '../core/data/dataReducer';
 import ROSLIB from 'roslib'
-
+import store from '../app/store';
+import CBOR from 'cbor-js'
+import { ROS_TOPICS } from '../core/ros/rosTopics';
+import ToastNotif from './ToastNotif';
+import { saveAs } from 'file-saver'
 
 const useStyles = makeStyles(theme=>({
   title: {
@@ -34,6 +38,9 @@ const useStyles = makeStyles(theme=>({
     fontSize: '10px',
     marginLeft: '4px',
     color: theme.palette.success.light
+  },
+  fileInput: {
+    display: 'none'
   }
 }))
 
@@ -49,6 +56,8 @@ function Header() {
   const arduinoStatus = useSelector(roomabot_mapping_on)
   const [loading, setLoading] = useState(true)
   const [dismissed, setDismissed] = useState(false)
+  const [notif, setNotifMsg] = useState('')
+
   if (serviceRequestTopic === null && socket){
     
   }
@@ -115,29 +124,38 @@ function Header() {
   }
   
   const onSave = () => {
-    if (serviceRequestTopic){
-      var command = new ROSLIB.Message({
-        command: SAVE,
-        arg1: '',
-        arg2: ''
-      });
-      serviceRequestTopic.publish(command)  
+    var map = store.getState().data[ROS_TOPICS.MAP.topic]
+    if (map){
+      map.data = new Uint8Array(map.data)
+      const encoded = CBOR.encode(map)
+      const file = new File([encoded], "roomabotmap", {
+        type: 'application/octet-stream'
+      })
+      saveAs(file)
     }
     else{
-      console.warn('request called when socket is not open')
+      setNotifMsg("Can't save empty map.")
     }
   }
   const onLoad = () => {
-    if (serviceRequestTopic){
-      var command = new ROSLIB.Message({
-        command: LOAD,
-        arg1: '',
-        arg2: ''
-      });
-      serviceRequestTopic.publish(command)  
-    }
-    else{
-      console.warn('request called when socket is not open')
+    document.getElementById('load-map').click()
+  }
+
+  const handleMapLoad = (mapFile) => {
+    console.log(mapFile)
+  }
+  const handleFiles = (event)  => {
+    const file = event.target.files[0]
+    // const reader = new FileReader()
+    if (file){
+      file.arrayBuffer().then(buffer => {
+        var map = CBOR.decode(buffer)
+        map.data = new Int8Array(map.data)
+        dispatch(message({
+          topic: ROS_TOPICS.MAP.topic,
+          message: map
+        }))
+      })
     }
   }
 
@@ -160,6 +178,12 @@ function Header() {
         confirmText={loading ? 'Starting...' : 'Start Mapping'}
         onClose={handleDialogAction}
       /> */}
+      <ToastNotif 
+        open={notif ? true : false} 
+        msg={notif} 
+        type="warning"
+        onClose={() => setNotifMsg('')}
+      />
       <SimpleDialog 
         open={connected && error} 
         title="Error" 
@@ -202,11 +226,15 @@ function Header() {
                       (loading ? <CircularProgress size={24} color="textPrimary"/> : <PlayArrowRounded/>)
                   }
                 </IconButton>
+                <input id="load-map" className={classes.fileInput} type="file"
+                  onChange={handleFiles}
+                />
                 <IconButton 
                   title="Load Saved Map" 
                   color="inherit"
+                  for=""
                   onClick={onLoad}
-                >
+                  >
                   <Folder/>
                 </IconButton>
                 <IconButton title="Save Current Map" color="inherit"

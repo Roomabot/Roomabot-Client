@@ -35,13 +35,5 @@ export default configureStore({
     data: dataReducer,
     tools: toolReducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActionPaths: ['payload.event', 'data./map'],
-      ignoredActions: ignoreActions
-    },
-    immutableCheck: {
-      ignoredPaths: [`data.${ROS_TOPICS.MAP.topic}`]
-    }
-  }).concat(rosMiddleware)
+  middleware: [rosMiddleware]
 });
