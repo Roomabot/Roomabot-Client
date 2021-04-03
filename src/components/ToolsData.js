@@ -1,6 +1,6 @@
 import { makeStyles, Typography } from '@material-ui/core'
 import React, {  } from 'react'
-import { measuredDistance } from '../core/tools/toolReducer'
+import { current_tool, measuredDistance } from '../core/tools/toolReducer'
 import { useSelector } from 'react-redux'
 import { TOOL } from '../core/tools/model'
 
@@ -20,11 +20,11 @@ const useStyles = makeStyles(theme=>({
 function ToolsData() {
   const classes = useStyles()
   const distance = useSelector(measuredDistance)
-  const current_tool = useSelector(current_tool)
+  const tool = useSelector(current_tool)
 
   return (
     <div className={classes.root}>
-      { current_tool === TOOL.MEASURE &&
+      { tool === TOOL.MEASURE &&
         <Typography>
           Distance: {distance.toFixed(3)}m
         </Typography>
